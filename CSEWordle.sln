@@ -4,6 +4,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.13.35913.81 d17.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordleWebApp", "WordleWebApp\WordleWebApp.csproj", "{C02C9F82-8F14-4675-9FA1-D7491D449CD9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AEDC54E2-B3B0-4C23-8A98-8079EB99EF28} = {AEDC54E2-B3B0-4C23-8A98-8079EB99EF28}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthenticationService", "AuthenticationService\AuthenticationService.csproj", "{AEDC54E2-B3B0-4C23-8A98-8079EB99EF28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Security", "Security\Security.csproj", "{4E3994C8-28B1-40A6-B5C0-FC3F828EE01C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +22,14 @@ Global
 		{C02C9F82-8F14-4675-9FA1-D7491D449CD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C02C9F82-8F14-4675-9FA1-D7491D449CD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C02C9F82-8F14-4675-9FA1-D7491D449CD9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEDC54E2-B3B0-4C23-8A98-8079EB99EF28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEDC54E2-B3B0-4C23-8A98-8079EB99EF28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEDC54E2-B3B0-4C23-8A98-8079EB99EF28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEDC54E2-B3B0-4C23-8A98-8079EB99EF28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E3994C8-28B1-40A6-B5C0-FC3F828EE01C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E3994C8-28B1-40A6-B5C0-FC3F828EE01C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E3994C8-28B1-40A6-B5C0-FC3F828EE01C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E3994C8-28B1-40A6-B5C0-FC3F828EE01C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

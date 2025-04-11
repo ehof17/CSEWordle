@@ -11,43 +11,43 @@ namespace WordleWebApp
 {
 
 
-    public partial class Default
+    public partial class HashPassword
     {
 
         /// <summary>
-        /// lblUsername control.
+        /// form1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblUsername;
+        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// ServiceDirectoryGrid control.
+        /// txtInput control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView ServiceDirectoryGrid;
+        protected global::System.Web.UI.WebControls.TextBox txtInput;
 
         /// <summary>
-        /// btnGoToMember control.
+        /// btnHash control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnGoToMember;
+        protected global::System.Web.UI.WebControls.Button btnHash;
 
         /// <summary>
-        /// btnGoToStaff control.
+        /// lblOutput control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnGoToStaff;
+        protected global::System.Web.UI.WebControls.Label lblOutput;
     }
 }
