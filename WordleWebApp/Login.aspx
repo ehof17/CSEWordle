@@ -15,6 +15,7 @@
             <asp:Label ID="lblPassword" runat="server" Text="Password:" />
             <asp:TextBox ID="txtPassword" runat="server" TextMode="Password" />
             <br />
+
             <asp:Button ID="btnLogin" runat="server" Text="Login" OnClick="btnLogin_Click" />
             <asp:Label ID="lblError" runat="server" ForeColor="Red" />
         </div>
@@ -29,6 +30,8 @@
                <br />
                <asp:Label ID="lblPasswordConfirm" runat="server" Text="Confirm Password:" />
                <asp:TextBox ID="txtPasswordConfirm" runat="server" TextMode="Password" />
+               <br />
+            <asp:CheckBox ID="saveUsernameCB" runat="server" Text="Save Username and Password" />
                <br />
                <asp:Button ID="btnRegister" runat="server" Text="Register" OnClick="btnRegister_Click" />
                <asp:Label ID="lblRegisterError" runat="server" ForeColor="Red" />

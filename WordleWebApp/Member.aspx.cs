@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using WordleLogic;
 
 namespace WordleWebApp
 {
@@ -12,6 +13,12 @@ namespace WordleWebApp
         protected void Page_Load(object sender, EventArgs e)
         {
 
+        }
+
+        protected void gameGeneratorBtn_Click(object sender, EventArgs e)
+        {
+            string word = Logic.generateWord();
+            testLbl.Text = word;
         }
     }
 }

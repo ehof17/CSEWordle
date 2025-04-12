@@ -11,7 +11,13 @@
         <div>
             <h1>Welcome to the member page</h1>
 
-            <p>Here users will be able to play puzzles</p>
+            <p>Here users will be able to play puzzles.</p>
+            <p>
+                <asp:Button ID="gameGeneratorBtn" runat="server" Text="Click here to play game." OnClick="gameGeneratorBtn_Click" />
+            </p>
+            <p>
+                <asp:Label ID="testLbl" runat="server" Text=""></asp:Label>
+            </p>
         </div>
     </form>
 </body>
