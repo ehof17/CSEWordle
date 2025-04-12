@@ -1,6 +1,7 @@
 ﻿using Microsoft.Ajax.Utilities;
 using System;
 using System.Web;
+using System.Net;
 using WordleWebApp.AuthServiceReference;
 using Security;
 namespace WordleWebApp
@@ -10,6 +11,16 @@ namespace WordleWebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            HttpCookie myCookies = Request.Cookies["myCookieId"];
+
+            if ((myCookies == null) || myCookies["username"] == "")
+            {
+                // new user or user didn't save username
+            }
+            else
+            {
+                txtUsername.Text = myCookies["username"];
+            }
         }
         protected void btnRegister_Click(object sender, EventArgs e)
         {
@@ -23,15 +34,26 @@ namespace WordleWebApp
                 return;
             }
 
+            //create cookie object
+            HttpCookie myCookies = new HttpCookie("myCookieId");
 
             string hashed = PasswordHasher.HashPassword(password);
             Service1Client authClient = new Service1Client();
 
             // Todo: Handle this better. Maybe return an object with an error message prop
             // instead of just checking the string
-            string success = authClient.Register(username, hashed, "Member.xml");
+            string success = authClient.Register(username, hashed, Server.MapPath("~/App_Data/Users.xml"));
             if (success == "Registration successful.")
             {
+                if(saveUsernameCB.Checked)
+                {
+                    //Storing username and hashed password as cookies if the checkbox is checked written by Alex 4/12
+                    myCookies["username"] = username;
+                    myCookies["hashedPassword"] = hashed; 
+                    myCookies.Expires = DateTime.Now.AddMonths(6);
+                    Response.Cookies.Add(myCookies);
+                }
+
                 // Store the username so we can display it on Default
                 Session["Username"] = username;
                 Response.Redirect("Default.aspx");
@@ -51,10 +73,9 @@ namespace WordleWebApp
 
             Service1Client authClient = new Service1Client();
 
-
             // Todo: Handle this better. Maybe return an object with an error message prop
             // instead of just checking the string
-            string success = authClient.Login(username, hashed, "Member.xml");
+            string success = authClient.Login(username, hashed, Server.MapPath("~/App_Data/Users.xml"));
             if (success == "Login successful.")
             {
                 // Store the username so we can display it on Default
