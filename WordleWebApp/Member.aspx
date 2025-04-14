@@ -16,7 +16,49 @@
                 <asp:Button ID="gameGeneratorBtn" runat="server" Text="Click here to play game." OnClick="gameGeneratorBtn_Click" />
             </p>
             <p>
-                <asp:Label ID="testLbl" runat="server" Text=""></asp:Label>
+                <asp:Label ID="messageLbl" runat="server" Text=""></asp:Label>
+            </p>
+            <p>
+                <asp:TextBox ID="guess1TB" runat="server"></asp:TextBox>
+            </p>
+            <p>
+                <asp:Label ID="guess1Lbl" runat="server" Text=""></asp:Label>
+            </p>
+            <p>
+                <asp:TextBox ID="guess2TB" runat="server"></asp:TextBox>
+            </p>
+            <p>
+                <asp:Label ID="guess2Lbl" runat="server" Text=""></asp:Label>
+            </p>
+            <p>
+                <asp:TextBox ID="guess3TB" runat="server"></asp:TextBox>
+            </p>
+            <p>
+                <asp:Label ID="guess3Lbl" runat="server" Text=""></asp:Label>
+            </p>
+            <p>
+                <asp:TextBox ID="guess4TB" runat="server"></asp:TextBox>
+            </p>
+            <p>
+                <asp:Label ID="guess4Lbl" runat="server" Text=""></asp:Label>
+            </p>
+            <p>
+                <asp:TextBox ID="guess5TB" runat="server"></asp:TextBox>
+            </p>
+            <p>
+                <asp:Label ID="guess5Lbl" runat="server" Text=""></asp:Label>
+            </p>
+            <p>
+                <asp:TextBox ID="guess6TB" runat="server"></asp:TextBox>
+            </p>
+            <p>
+                <asp:Label ID="guess6Lbl" runat="server" Text=""></asp:Label>
+            </p>
+            <p>
+                <asp:Button ID="guessButton" runat="server" Text="Guess" Height="40px" OnClick="guessButton_Click" Width="110px" />
+            </p>
+            <p>
+                <asp:Label ID="winStatusLbl" runat="server" Text=""></asp:Label>
             </p>
         </div>
     </form>

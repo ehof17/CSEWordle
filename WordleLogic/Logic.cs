@@ -5,11 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
+
 namespace WordleLogic
 {
     public static class Logic
     {
-
+        //Written by Alex Alvarado
         public static string GenerateWord(string filePath)
         {
             if(!File.Exists(filePath))
@@ -27,6 +29,7 @@ namespace WordleLogic
             return words[rand.Next(words.Length)].Trim();
         }
 
+        //Written by Alex Alvarado
         public static List<WordLetter> WordGuessChecker(string userGuess, string actualWord) 
         {
 
@@ -53,19 +56,72 @@ namespace WordleLogic
                 if (actualLetter[i].Letter == guessLetter[i].Letter) //letter is in the correct spot
                 {
                     guessLetter[i].Status = WordLetter.LetterStatus.CorrectLetter;
+                    guessLetter[i].Position = i;
                 }else if (actualWord.Contains(guessLetter[i].Letter)) //letter is in the word but not the correct spot
                 {
                     guessLetter[i].Status = WordLetter.LetterStatus.CorrectLetterWrongSpot;
+                    guessLetter[i].Position = i;
                 }
                 else //letter is not in word
                 {
                     guessLetter[i].Status = WordLetter.LetterStatus.IncorrectLetter;
+                    guessLetter[i].Position = i;
                 }
 
             }
             return guessLetter;
         }
+
+        //Written by Alex Alvarado
+        public static bool IsValidGuess(string filePath, string guess)
+        {
+            if (!File.Exists(filePath))
+            {
+                throw new FileNotFoundException("The file could not be found.\n", filePath);
+            }
+            string[] words = File.ReadAllLines(filePath);
+
+            if (words.Length == 0)
+            {
+                throw new InvalidOperationException("The file is empty.\n");
+            }
+            if (words.Contains(guess))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        //Written by Alex Alvarado
+        public static List<WordLetter> convertToDisplay(List<WordLetter> guess)
+        {
+            List<WordLetter> display = new List<WordLetter>();
+            for(int i = 0; i < guess.Count; i++)
+            {
+                char displayChar;
+                if (guess[i].Status == WordLetter.LetterStatus.CorrectLetter)
+                {
+                    displayChar = guess[i].Letter;
+                }else if (guess[i].Status == WordLetter.LetterStatus.CorrectLetterWrongSpot)
+                {
+                    displayChar = '?';
+
+                }else if (guess[i].Status == WordLetter.LetterStatus.IncorrectLetter)
+                {
+                    displayChar = '_';
+                }
+                else
+                {
+                    Console.WriteLine("Something went wrong in convertToDisplay()");
+                    displayChar = ' ';
+                }
+                display.Add(new WordLetter(displayChar));
+            }
+            return display;
+        }
     }
+
+    //Written by Alex Alvarado
     public class WordLetter
     {
         public enum LetterStatus
@@ -78,10 +134,13 @@ namespace WordleLogic
         public char Letter { get; set; }
         public LetterStatus Status { get; set; }
 
+        public int Position { get; set; }
+
         public WordLetter(char letter)
         {
             Letter = letter;
             Status = LetterStatus.Unknown;
+            Position = 0;
         }
     }
 }
