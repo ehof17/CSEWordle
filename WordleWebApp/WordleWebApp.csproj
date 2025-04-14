@@ -113,6 +113,7 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
     <Content Include="App_Data\Users.xml" />
+    <Content Include="App_Data\words.txt" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-grid.rtl.css" />

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Microsoft.Ajax.Utilities;
 using WordleLogic;
 
 namespace WordleWebApp
@@ -17,7 +18,7 @@ namespace WordleWebApp
 
         protected void gameGeneratorBtn_Click(object sender, EventArgs e)
         {
-            string word = Logic.generateWord();
+            string word = Logic.GenerateWord(Server.MapPath("~/App_Data/words.txt"));
             testLbl.Text = word;
         }
     }

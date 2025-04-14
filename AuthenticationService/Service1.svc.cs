@@ -129,7 +129,7 @@ namespace AuthenticationService
             // Use locking to prevent simultaneous writes
             lock (filePath)
             {
-                File.AppendAllText(filePath, line + Environment.NewLine);
+                //File.AppendAllText(filePath, line + Environment.NewLine); // I commented out this line so that i can test the porgram !!!!!!!!!!!!!!!!!!!!!!!!!!!!
             }
         }
 
