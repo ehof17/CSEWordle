@@ -60,8 +60,10 @@ namespace WordleWebApp
             
             string userGuess = guessTextBox.Text.Trim().ToLower();
             if (!Logic.IsValidGuess(Server.MapPath("~/App_Data/words.txt"), userGuess)){
-                //
-                Console.WriteLine("Update this");
+                
+                resultLbl.Text = "Your guess must be a valid word.";
+                return;
+
             }
           
 
