@@ -29,7 +29,7 @@ namespace WordleLogic
             return words[rand.Next(words.Length)].Trim();
         }
 
-        //Written by Alex Alvarado
+        //Written by Alex Alvarado and edited by Eli Hoffman
         public static List<WordLetter> WordGuessChecker(string userGuess, string actualWord) 
         {
 
