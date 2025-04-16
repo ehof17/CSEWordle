@@ -52,57 +52,15 @@
             <p>
                 <asp:Button ID="gameGeneratorBtn" runat="server" Text="Click here to play a game." OnClick="gameGeneratorBtn_Click" />
             </p>
-            <p>
-                <asp:Label ID="messageLbl" runat="server" Text=""></asp:Label>
-            </p>
-            <p>
-                <asp:TextBox ID="guess1TB" runat="server"></asp:TextBox>
-            </p>
-            <p>
-                <asp:Label ID="guess1Lbl" runat="server" Text=""></asp:Label>
-            </p>
-            <p>
-                <asp:TextBox ID="guess2TB" runat="server"></asp:TextBox>
-            </p>
-            <p>
-                <asp:Label ID="guess2Lbl" runat="server" Text=""></asp:Label>
-            </p>
-            <p>
-                <asp:TextBox ID="guess3TB" runat="server"></asp:TextBox>
-            </p>
-            <p>
-                <asp:Label ID="guess3Lbl" runat="server" Text=""></asp:Label>
-            </p>
-            <p>
-                <asp:TextBox ID="guess4TB" runat="server"></asp:TextBox>
-            </p>
-            <p>
-                <asp:Label ID="guess4Lbl" runat="server" Text=""></asp:Label>
-            </p>
-            <p>
-                <asp:TextBox ID="guess5TB" runat="server"></asp:TextBox>
-            </p>
-            <p>
-                <asp:Label ID="guess5Lbl" runat="server" Text=""></asp:Label>
-            </p>
-            <p>
-                <asp:TextBox ID="guess6TB" runat="server"></asp:TextBox>
-            </p>
-            <p>
-                <asp:Label ID="guess6Lbl" runat="server" Text=""></asp:Label>
-            </p>
-            <p>
-                <asp:Button ID="guessButton" runat="server" Text="Guess" Height="40px" OnClick="guessButton_Click" Width="110px" />
-            </p>
-            <p>
-                <asp:Label ID="winStatusLbl" runat="server" Text=""></asp:Label>
-            </p>
+           
             <!-- maxlength 5 for wordle but may want this to be dynamic !-->
             <asp:TextBox ID="guessTextBox" runat="server" MaxLength="5"></asp:TextBox>
+
 
             <asp:Button ID="submitGuessBtn" runat="server" Text="Submit Guess" OnClick="submitGuessBtn_Click" />
             <br /><br />
 
+            <asp:Label ID="testLbl" runat="server" />
            
             <asp:Label ID="resultLbl" runat="server" Text=""></asp:Label>
 

@@ -33,177 +33,57 @@ namespace WordleWebApp
         protected global::System.Web.UI.WebControls.Button gameGeneratorBtn;
 
         /// <summary>
-        /// messageLbl control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-<<<<<<< HEAD
-        protected global::System.Web.UI.WebControls.Label testLbl;
-
-        /// <summary>
         /// guessTextBox control.
-=======
-        protected global::System.Web.UI.WebControls.Label messageLbl;
-
-        /// <summary>
-        /// guess1TB control.
->>>>>>> master
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-<<<<<<< HEAD
         protected global::System.Web.UI.WebControls.TextBox guessTextBox;
 
         /// <summary>
         /// submitGuessBtn control.
-=======
-        protected global::System.Web.UI.WebControls.TextBox guess1TB;
-
-        /// <summary>
-        /// guess1Lbl control.
->>>>>>> master
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-<<<<<<< HEAD
         protected global::System.Web.UI.WebControls.Button submitGuessBtn;
 
         /// <summary>
-        /// resultLbl control.
-=======
-        protected global::System.Web.UI.WebControls.Label guess1Lbl;
-
-        /// <summary>
-        /// guess2TB control.
->>>>>>> master
+        /// testLbl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-<<<<<<< HEAD
+        protected global::System.Web.UI.WebControls.Label testLbl;
+
+        /// <summary>
+        /// resultLbl control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
         protected global::System.Web.UI.WebControls.Label resultLbl;
 
         /// <summary>
         /// guessesPanel control.
-=======
-        protected global::System.Web.UI.WebControls.TextBox guess2TB;
-
-        /// <summary>
-        /// guess2Lbl control.
->>>>>>> master
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-<<<<<<< HEAD
         protected global::System.Web.UI.WebControls.Panel guessesPanel;
 
         /// <summary>
         /// keyboardLiteral control.
-=======
-        protected global::System.Web.UI.WebControls.Label guess2Lbl;
-
-        /// <summary>
-        /// guess3TB control.
->>>>>>> master
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-<<<<<<< HEAD
         protected global::System.Web.UI.WebControls.Literal keyboardLiteral;
-=======
-        protected global::System.Web.UI.WebControls.TextBox guess3TB;
-
-        /// <summary>
-        /// guess3Lbl control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label guess3Lbl;
-
-        /// <summary>
-        /// guess4TB control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox guess4TB;
-
-        /// <summary>
-        /// guess4Lbl control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label guess4Lbl;
-
-        /// <summary>
-        /// guess5TB control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox guess5TB;
-
-        /// <summary>
-        /// guess5Lbl control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label guess5Lbl;
-
-        /// <summary>
-        /// guess6TB control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox guess6TB;
-
-        /// <summary>
-        /// guess6Lbl control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label guess6Lbl;
-
-        /// <summary>
-        /// guessButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button guessButton;
-
-        /// <summary>
-        /// winStatusLbl control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label winStatusLbl;
->>>>>>> master
     }
 }

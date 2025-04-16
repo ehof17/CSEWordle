@@ -70,8 +70,7 @@ namespace WordleLogic
                 if (char.ToUpper(userGuess[i]) == char.ToUpper(actualWord[i]))
                 {
                     guessLetter[i].Status = WordLetter.LetterStatus.CorrectLetter;
-<<<<<<< HEAD
-                    // 
+
                     letterCounts[char.ToUpper(userGuess[i])]--;
                 }
             }
@@ -90,13 +89,6 @@ namespace WordleLogic
                 {
                     guessLetter[i].Status = WordLetter.LetterStatus.CorrectLetterWrongSpot;
                     letterCounts[letter]--;
-=======
-                    guessLetter[i].Position = i;
-                }else if (actualWord.Contains(guessLetter[i].Letter)) //letter is in the word but not the correct spot
-                {
-                    guessLetter[i].Status = WordLetter.LetterStatus.CorrectLetterWrongSpot;
-                    guessLetter[i].Position = i;
->>>>>>> master
                 }
                 // This incorrect doesn't mean that the letter is not in the word at all necessarily
                 // just that there is not another instance of the letter available
