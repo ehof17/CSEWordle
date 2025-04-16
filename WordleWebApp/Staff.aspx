@@ -10,7 +10,17 @@
     <form id="form1" runat="server">
         <div>
             <h1>Welcome to the staff page</h1>
-            <p>Here users can create puzzles and look at statistics</p>
+            <p>Here users can append words to the list.</p>
+            <p>
+                <asp:TextBox ID="enterWordHereTB" runat="server"></asp:TextBox>
+            </p>
+            <p>
+                <asp:Button ID="addWordBtn" runat="server" Text="Add word" OnClick="addWordBtn_Click" />
+                <asp:Label ID="WordAddedLbl" runat="server" Text=""></asp:Label>
+            </p>
+            <p>
+                <asp:Button ID="backButton" runat="server" Text="Back" OnClick="backButton_Click" />
+            </p>
         </div>
     </form>
 </body>

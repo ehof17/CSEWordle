@@ -31,7 +31,7 @@
                <asp:Label ID="lblPasswordConfirm" runat="server" Text="Confirm Password:" />
                <asp:TextBox ID="txtPasswordConfirm" runat="server" TextMode="Password" />
                <br />
-            <asp:CheckBox ID="saveUsernameCB" runat="server" Text="Save Username and Password" />
+            <asp:CheckBox ID="saveUsernameCB" runat="server" Text="Save Username" />
                <br />
                <asp:Button ID="btnRegister" runat="server" Text="Register" OnClick="btnRegister_Click" />
                <asp:Label ID="lblRegisterError" runat="server" ForeColor="Red" />

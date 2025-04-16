@@ -54,7 +54,47 @@ namespace WordleWebApp
                 Description = "Hashes the password using SHA-256",
                 TryItLink = "HashPassword.aspx"
             },
-           
+            new ServiceEntry
+            {
+                Provider = "Alex Alvarado",
+                ComponentType = "DLL Function",
+                Operation = "GenerateWord",
+                Parameters = "string filepath",
+                ReturnType = "string",
+                Description = "This function generates a random word from the list of words in word.txt in app data",
+                TryItLink = "Member.aspx"
+            },
+            new ServiceEntry
+            {
+                Provider = "Alex Alvarado",
+                ComponentType = "Cookies",
+                Operation = "Saves username",
+                Parameters = "N/A",
+                ReturnType = "N/A",
+                Description = "When a user registers they can opt in to using cookies and their username will be saved next time they log in",
+                TryItLink = "Login.aspx"
+            },
+            new ServiceEntry
+            {
+                Provider = "Alex Alvarado/Eli Hoffman",
+                ComponentType = "DLL Function",
+                Operation = "WordGuessChecker",
+                Parameters = "string userGuess, string actualWord",
+                ReturnType = "List<WordLetter>",
+                Description = "Takes a users guess and the actaul generated word and compares them and creates a list that holds WordLetters that have the status of each letter",
+                TryItLink = "Member.aspx"
+            },
+            new ServiceEntry
+            {
+                Provider = "Alex Alvarado",
+                ComponentType = "DLL Function",
+                Operation = "IsValidGuess",
+                Parameters = "string filePath, string guess",
+                ReturnType = "bool",
+                Description = "takes a users guess and checks whether it is in the list of guessable words in words.txt",
+                TryItLink = "Staff.aspx"
+            },
+
         };
 
                     ServiceDirectoryGrid.DataSource = entries;

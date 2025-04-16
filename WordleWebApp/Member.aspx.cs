@@ -254,9 +254,9 @@ namespace WordleWebApp
             Session["KeyboardState"] = keyboardState;
         }
 
-
-       
-
-       
+        protected void backButton_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Default.aspx");
+        }
     }
 }

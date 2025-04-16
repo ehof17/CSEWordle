@@ -51,6 +51,7 @@
             <p>Here users will be able to play puzzles.</p>
             <p>
                 <asp:Button ID="gameGeneratorBtn" runat="server" Text="Click here to play a game." OnClick="gameGeneratorBtn_Click" />
+                <asp:Button ID="backButton" runat="server" Text="Back" OnClick="backButton_Click" />
             </p>
            
             <!-- maxlength 5 for wordle but may want this to be dynamic !-->
