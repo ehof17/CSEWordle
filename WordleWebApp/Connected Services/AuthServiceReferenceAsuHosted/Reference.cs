@@ -8,11 +8,11 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WordleWebApp.AuthServiceReference {
+namespace WordleWebApp.AuthServiceReferenceAsuHosted {
     
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="AuthServiceReference.IService1")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="AuthServiceReferenceAsuHosted.IService1")]
     public interface IService1 {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/Login", ReplyAction="http://tempuri.org/IService1/LoginResponse")]
@@ -29,12 +29,12 @@ namespace WordleWebApp.AuthServiceReference {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IService1Channel : WordleWebApp.AuthServiceReference.IService1, System.ServiceModel.IClientChannel {
+    public interface IService1Channel : WordleWebApp.AuthServiceReferenceAsuHosted.IService1, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class Service1Client : System.ServiceModel.ClientBase<WordleWebApp.AuthServiceReference.IService1>, WordleWebApp.AuthServiceReference.IService1 {
+    public partial class Service1Client : System.ServiceModel.ClientBase<WordleWebApp.AuthServiceReferenceAsuHosted.IService1>, WordleWebApp.AuthServiceReferenceAsuHosted.IService1 {
         
         public Service1Client() {
         }

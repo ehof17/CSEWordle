@@ -2,25 +2,24 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.ServiceModel;
 using System.Text;
-using System.Threading.Tasks;
 
-
-
-namespace WordleLogic
+namespace WordleLogicServiceApplication
 {
-    public static class Logic
+    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in both code and config file together.
+    public class Service1 : IService1
     {
-        //Written by Alex Alvarado
-        public static string GenerateWord(string filePath)
+        public string GenerateWord(string filePath)
         {
-            if(!File.Exists(filePath))
+            if (!File.Exists(filePath))
             {
                 throw new FileNotFoundException("The file could not be found.\n", filePath);
             }
             string[] words = File.ReadAllLines(filePath);
 
-            if(words.Length == 0)
+            if (words.Length == 0)
             {
                 throw new InvalidOperationException("The file is empty.\n");
             }
@@ -28,9 +27,8 @@ namespace WordleLogic
             Random rand = new Random();
             return words[rand.Next(words.Length)].Trim();
         }
-
-        //Written by Alex Alvarado
-        public static List<WordLetter> WordGuessChecker(string userGuess, string actualWord) 
+        //Written by Alex Alvarado and edited by Eli Hoffman
+        public List<WordLetter> WordGuessChecker(string userGuess, string actualWord)
         {
 
             //create two lists:
@@ -105,7 +103,7 @@ namespace WordleLogic
         }
 
         //Written by Alex Alvarado
-        public static bool IsValidGuess(string filePath, string guess)
+        public bool IsValidGuess(string filePath, string guess)
         {
             if (!File.Exists(filePath))
             {
@@ -125,20 +123,22 @@ namespace WordleLogic
         }
 
         //Written by Alex Alvarado
-        public static List<WordLetter> convertToDisplay(List<WordLetter> guess)
+        public List<WordLetter> ConvertToDisplay(List<WordLetter> guess)
         {
             List<WordLetter> display = new List<WordLetter>();
-            for(int i = 0; i < guess.Count; i++)
+            for (int i = 0; i < guess.Count; i++)
             {
                 char displayChar;
                 if (guess[i].Status == WordLetter.LetterStatus.CorrectLetter)
                 {
                     displayChar = guess[i].Letter;
-                }else if (guess[i].Status == WordLetter.LetterStatus.CorrectLetterWrongSpot)
+                }
+                else if (guess[i].Status == WordLetter.LetterStatus.CorrectLetterWrongSpot)
                 {
                     displayChar = '?';
 
-                }else if (guess[i].Status == WordLetter.LetterStatus.IncorrectLetter)
+                }
+                else if (guess[i].Status == WordLetter.LetterStatus.IncorrectLetter)
                 {
                     displayChar = '_';
                 }
@@ -150,29 +150,6 @@ namespace WordleLogic
                 display.Add(new WordLetter(displayChar));
             }
             return display;
-        }
-    }
-
-    //Written by Alex Alvarado
-    public class WordLetter
-    {
-        public enum LetterStatus
-        {
-            Unknown = 0,
-            CorrectLetter = 1,
-            CorrectLetterWrongSpot = 2,
-            IncorrectLetter = 3
-        }
-        public char Letter { get; set; }
-        public LetterStatus Status { get; set; }
-
-        public int Position { get; set; }
-
-        public WordLetter(char letter)
-        {
-            Letter = letter;
-            Status = LetterStatus.Unknown;
-            Position = 0;
         }
     }
 }

@@ -2,7 +2,7 @@
 using System;
 using System.Web;
 using System.Net;
-using WordleWebApp.AuthServiceReference;
+using WordleWebApp.AuthServiceReferenceAsuHosted;
 using Security;
 namespace WordleWebApp
 {
