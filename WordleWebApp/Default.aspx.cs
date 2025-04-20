@@ -137,10 +137,6 @@ namespace WordleWebApp
              },
 
 
-
-
-
-
         };
 
                     ServiceDirectoryGrid.DataSource = entries;
