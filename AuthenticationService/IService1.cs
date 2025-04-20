@@ -14,9 +14,9 @@ namespace AuthenticationService
     {
 
         [OperationContract]
-        string Login(string username, string password, string userXmlPath);
+        AuthResult Login(string username, string password, string userXmlPath, string logAttemptsPath);
         [OperationContract]
-        string Register(string username, string password, string userXmlPath);
+        AuthResult Register(string username, string password, string userXmlPath);
     }
 
 
@@ -45,5 +45,26 @@ namespace AuthenticationService
     public class UserList : List<User>
     {
         
+    }
+    [DataContract]
+    public class LoginAttempt
+    {
+        [DataMember(Order = 0)] public DateTime UtcTime { get; set; }
+        [DataMember(Order = 1)] public string Username { get; set; }
+        [DataMember(Order = 2)] public bool Success { get; set; }
+    }
+    [CollectionDataContract(Name = "LoginAttempts",
+                            ItemName = "Attempt")]
+    public class LoginAttemptList : List<LoginAttempt> { }
+
+    [DataContract]
+    public class AuthResult
+    {
+        [DataMember(Order = 0)]
+        public bool Success { get; set; }
+
+        [DataMember(Order = 1)]
+        public string Message { get; set; }
+
     }
 }

@@ -26,6 +26,7 @@
     <MetadataFile FileName="Service1.xsd" MetadataType="Schema" ID="f7ca1b11-d080-4cf2-93ea-aa7d01b0e88e" SourceId="1" SourceUrl="http://webstrar47.fulton.asu.edu/Page0/Service1.svc?xsd=xsd1" />
     <MetadataFile FileName="Service11.xsd" MetadataType="Schema" ID="854dbc06-2308-4550-99df-17f898edc6a5" SourceId="1" SourceUrl="http://webstrar47.fulton.asu.edu/Page0/Service1.svc?xsd=xsd0" />
     <MetadataFile FileName="Service1.disco" MetadataType="Disco" ID="cf3360fd-637d-414a-a0b1-186302fa4bfb" SourceId="1" SourceUrl="http://webstrar47.fulton.asu.edu/Page0/Service1.svc?disco" />
+    <MetadataFile FileName="Service12.xsd" MetadataType="Schema" ID="501b7b8d-9167-44c7-a4b1-f9e6be96f749" SourceId="1" SourceUrl="http://webstrar47.fulton.asu.edu/Page0/Service1.svc?xsd=xsd2" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

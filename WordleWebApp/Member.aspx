@@ -92,7 +92,7 @@
     </style>
 </head>
 <body>
-    <form id="form1" runat="server" class="container">
+    <form id="form1" runat="server" class="container" defaultbutton="submitGuessBtn">
         <h1>Wordle Game</h1>
         <div class="actions">
             <asp:Button ID="gameGeneratorBtn" runat="server" Text="New Game" OnClick="gameGeneratorBtn_Click" CssClass="btn" />

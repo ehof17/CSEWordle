@@ -40,10 +40,10 @@ namespace WordleWebApp
             string hashed = PasswordHasher.HashPassword(password);
             Service1Client authClient = new Service1Client();
 
-            // Todo: Handle this better. Maybe return an object with an error message prop
-            // instead of just checking the string
-            string success = authClient.Register(username, hashed, Server.MapPath("~/App_Data/Users.xml"));
-            if (success == "Registration successful.")
+      
+
+            AuthResult res = authClient.Register(username, hashed, Server.MapPath("~/App_Data/Users.xml"));
+            if (res.Success)
             {
                 if(saveUsernameCB.Checked)
                 {
@@ -60,7 +60,7 @@ namespace WordleWebApp
             }
             else
             {
-                lblRegisterError.Text = success;
+                lblRegisterError.Text = res.Message;
             }
         }
         protected void btnLogin_Click(object sender, EventArgs e)
@@ -69,22 +69,21 @@ namespace WordleWebApp
             string password = txtPassword.Text;
 
             string hashed = PasswordHasher.HashPassword(password);
-            bool bruh = PasswordHasher.VerifyPassword(password, hashed);
-
             Service1Client authClient = new Service1Client();
 
-            // Todo: Handle this better. Maybe return an object with an error message prop
-            // instead of just checking the string
-            string success = authClient.Login(username, hashed, Server.MapPath("~/App_Data/Users.xml"));
-            if (success == "Login successful.")
+            AuthResult res = authClient.Login(username, hashed, Server.MapPath("~/App_Data/Users.xml"), Server.MapPath("~/App_Data/LoginAttempts.xml"));
+            
+            if (res.Success)
             {
                 // Store the username so we can display it on Default
                 Session["Username"] = username;
+               // add this for 6
+               // FormsAuthentication
                 Response.Redirect("Default.aspx");
             }
             else
             {
-                lblError.Text = success;
+                lblError.Text = res.Message;
             }
         }
     }

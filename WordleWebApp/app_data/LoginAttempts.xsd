@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema 
+   
+   xmlns:xsd="http://schemas.datacontract.org/2004/07/AuthenticationService"
+    elementFormDefault="qualified"
+>
+	<xsd:element name="LoginAttempts">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Attempt" minOccurs="0" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	
+	
+	<xsd:element name="Attempt">
+
+				
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="UtcTime"  type="xsd:dateTime"/>
+							<xsd:element name="Username" type="xsd:string"/>
+							<xsd:element name="ClientIP" type="xsd:string"/>
+							<xsd:element name="Success"  type="xsd:boolean"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+
+</xsd:schema>

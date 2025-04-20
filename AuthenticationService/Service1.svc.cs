@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.ServiceModel;
@@ -17,56 +18,157 @@ namespace AuthenticationService
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
     public class Service1 : IService1
     {
-        // TODO: Maybe change this to xml... Or remove entirely
-        private static readonly string attemptsFilePath = "loginAttempts.txt";
 
+        private static readonly object attemptLock = new object();
         // Max attempts 5 in a 10 minute window.
         private const int maxAttempts = 5;
         private static readonly TimeSpan attemptWindow = TimeSpan.FromMinutes(10);
-        public string Login(string username, string hashedPassword, string userXmlPath) 
-         {
-            string clientIP = GetClientIP();
+        private static readonly DataContractSerializer attemptSerializer = new DataContractSerializer(typeof(LoginAttemptList));
 
-            if (IsBlocked(username, clientIP))
+
+        // Gets all the log attempts from the xml file provided
+        private LoginAttemptList LoadAttempts(string attemptsFilePath)
+        {
+            if (!File.Exists(attemptsFilePath))
+                return new LoginAttemptList();
+
+            lock (attemptLock)
             {
-                return "Too many login attempts. Please try again later.";
+                using (var s = File.OpenRead(attemptsFilePath))  
+                {
+                    return (LoginAttemptList)attemptSerializer.ReadObject(s);
+                }
+            }
+        }
+
+        // Saves all the log attempts to a file
+        private void SaveAttempts(LoginAttemptList attempts, string attemptsFilePath)
+        {
+            lock (attemptLock)
+            {
+                using (var s = File.Create(attemptsFilePath))   
+                {
+                    attemptSerializer.WriteObject(s, attempts);
+                }                                              
+            }
+        }
+
+        // Gets if the username was not attempted to be logged into today
+        private bool IsFirstAttemptOfDay(string username, string attemptsFilePath)
+        {
+            var attempts = LoadAttempts(attemptsFilePath);
+            DateTime today = DateTime.Now.Date;   
+
+            return !attempts.Any(a =>
+                a.Username == username &&
+                a.UtcTime.ToLocalTime().Date == today);
+        }
+
+
+        // Gets if a particular username is blocked from logging in
+        // They can only have 5 incorrect attempts within a 10 minute window
+        private bool IsBlocked(string username, string attemptsFilePath)
+        {
+            var attempts = LoadAttempts(attemptsFilePath);
+            DateTime cutoff = DateTime.UtcNow - attemptWindow;
+
+            int failures = attempts.Count(a =>
+                a.UtcTime >= cutoff &&
+                a.Username.Equals(username, StringComparison.OrdinalIgnoreCase) &&
+                !a.Success);
+
+            return failures >= maxAttempts;
+        }
+
+        // Gets all previous attempts, adds a new one, and saves the combined xml
+        private void RecordAttempt(string username,bool success, string attemptsFilePath)
+        {
+            var attempts = LoadAttempts(attemptsFilePath);
+            attempts.Add(new LoginAttempt
+            {
+                UtcTime = DateTime.UtcNow,
+                Username = username,
+                Success = success
+            });
+            SaveAttempts(attempts, attemptsFilePath);
+        }
+
+        public AuthResult Login(string username, string hashedPassword, string userXmlPath, string logAttemptsPath) 
+         {
+
+            if (IsBlocked(username,logAttemptsPath))
+            {
+                return new AuthResult
+                {
+                    Success = false,
+                    Message = "Too many login attempts. Please try again later."
+                };
             }
 
             var users = LoadUsers(userXmlPath);
-            bool firstAttemptToday = IsFirstAttemptOfDay(clientIP);
+            bool firstAttemptToday = IsFirstAttemptOfDay(username, logAttemptsPath);
 
+
+            // if username is invalid
             if (!users.ContainsKey(username))
             {
-                LogAttempt(username, clientIP, false);
-                return firstAttemptToday ? "Invalid username." : "Invalid username or password.";
+                RecordAttempt(username,  false, logAttemptsPath);
+                // Give more details if its the first attempt of the day
+                return new AuthResult
+                {
+                    Success = false,
+                    Message = firstAttemptToday ? "Invalid username." : "Invalid username or password.",
+                };
+               
             }
 
+
+            // if password is valid
             string storedHashed = users[username];
-         
             if (storedHashed == hashedPassword)
             {
-                LogAttempt(username, clientIP, true);
-                return "Login successful.";
+                RecordAttempt(username, true, logAttemptsPath);
+                return new AuthResult
+                {
+                    Success = true,
+                    Message = "Login successful."
+                };
+               
             }
             else
             {
-                LogAttempt(username, clientIP, false);
-                return firstAttemptToday ? "Invalid password." : "Invalid username or password.";
+                RecordAttempt(username, false, logAttemptsPath);
+                return new AuthResult
+                {
+                    Success = false,
+                    Message = firstAttemptToday ? "Invalid password." : "Invalid username or password.",
+                };
             }
         }
-        public string Register(string username, string password, string userXmlPath)
+        public AuthResult Register(string username, string password, string userXmlPath)
         {
+            // get all the valid users
             var users = LoadUsers(userXmlPath);
 
             string validationError = ValidateUsername(username, users);
             if (!string.IsNullOrEmpty(validationError))
             {
-                return validationError;
+                return new AuthResult
+                {
+                    Success = false,
+                    Message = validationError
+                };
+               
             }
 
-          //  string hashedPassword = ComputeHash(password);
+      
             SaveUser(userXmlPath, username, password);
-            return "Registration successful.";
+            return new AuthResult
+            {
+                Success = false,
+                Message = "Registration successful."
+            };
+           
         }
 
 
@@ -119,72 +221,11 @@ namespace AuthenticationService
                 var serializer = new DataContractSerializer(typeof(UserList));
                 serializer.WriteObject(stream, users);
             }
-        }
+        
 
 
 
-        // Appends a single line to the specified file.
-        private void AppendLine(string filePath, string line)
-        {
-            // Use locking to prevent simultaneous writes
-            lock (filePath)
-            {
-                //File.AppendAllText(filePath, line + Environment.NewLine); // I commented out this line so that i can test the porgram !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            }
-        }
-
-   
-
-        // Logs a login attempt with a timestamp, username, client IP, and whether it was successful.
-        private void LogAttempt(string username, string clientIP, bool success)
-        {
-            string logLine = string.Format("{0:o},{1},{2},{3}", DateTime.UtcNow, username, clientIP, success);
-            AppendLine(attemptsFilePath, logLine);
-        }
-
-        // Checks whether there have been too many failed login attempts for the given username and IP.
-        private bool IsBlocked(string username, string clientIP)
-        {
-            if (!File.Exists(attemptsFilePath))
-            {
-                return false;
-            }
-            var lines = File.ReadAllLines(attemptsFilePath);
-            DateTime cutoff = DateTime.UtcNow - attemptWindow;
-            // Count the number of failed attempts
-            int count = lines.Count(delegate (string line)
-            {
-                string[] parts = line.Split(',');
-                // if the input is invalid its not an attempt
-                if (parts.Length != 4)
-                    return false;
-                DateTime timestamp;
-
-                if (!DateTime.TryParse(parts[0], out timestamp))
-                    return false;
-                string logUsername = parts[1];
-                string logIP = parts[2];
-                bool logSuccess = bool.Parse(parts[3]);
-
-                // If the invalid login was within the 10 minute window, count it
-                return timestamp >= cutoff &&
-                       logUsername.Equals(username, StringComparison.OrdinalIgnoreCase) &&
-                       logIP == clientIP &&
-                       !logSuccess;
-            });
-            return count >= maxAttempts;
-        }
-        // Retrieves the client's IP address from HttpContext.
-        // Have no idea if this actually works because everytime it would just be localhost
-        private string GetClientIP()
-        {
-            try
-            {
-                string IP = HttpContext.Current.Request.UserHostAddress;
-                return IP;
-            }
-            catch { }
-            return "unknown";
+      
         }
         // Helper function ensures that the username doesn't already exist or includes an invalid character
         private string ValidateUsername(string username, Dictionary<string, string> existingUsers)
@@ -195,42 +236,12 @@ namespace AuthenticationService
             }
             if (username.Contains(":") || username.Contains(","))
             {
-                // These characters are used as delimeters in storage so having a username with this character would break it
                 return "Username cannot include characters ':' or ',' ";
             }
             return string.Empty; // Valid username since no errors
         }
-        private bool IsFirstAttemptOfDay(string clientIP)
-        {
-            if (!File.Exists(attemptsFilePath))
-            {
-                return true;
-            }
-            var lines = File.ReadAllLines(attemptsFilePath);
-            DateTime localToday = DateTime.Now.Date;
-
-            foreach (var line in lines)
-            {
-                string[] parts = line.Split(',');
-                if (parts.Length >= 4)
-                {
-                    DateTime timestamp;
-                    if (DateTime.TryParseExact(parts[0].Trim(), "o", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AssumeUniversal, out timestamp))
-                    {
-                        // Convert the logged UTC timestamp to local time.
-                        DateTime localTimestamp = timestamp.ToLocalTime();
-
-
-                        if (localTimestamp.Date == localToday && parts[2].Trim() == clientIP)
-                        {
-                            return false; // Found an attempt from this IP today.
-                        }
-                    }
-                }
-            }
-            return true;
-        }
-
+        
+      
 
     }
 

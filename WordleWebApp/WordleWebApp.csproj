@@ -102,7 +102,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\LoginAttempts.xml" />
     <Content Include="WordleLogicTryIt.aspx" />
+    <None Include="App_Data\LoginAttempts.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="App_Data\Users.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -122,6 +126,12 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <None Include="Connected Services\AuthServiceReferenceAsuHosted\Service12.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Connected Services\AuthServiceReferenceAsuHosted\WordleWebApp.AuthServiceReferenceAsuHosted.AuthResult.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
     <None Include="Connected Services\WordleLogicServiceReference\Service1.disco" />
     <None Include="Connected Services\WordleLogicServiceReference\configuration91.svcinfo" />
     <None Include="Connected Services\WordleLogicServiceReference\configuration.svcinfo" />

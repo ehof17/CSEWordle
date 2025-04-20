@@ -96,8 +96,8 @@ namespace WordleWebApp
                 Provider = "Eli Hoffman",
                 ComponentType = "Web Service (WSDL)",
                 Operation = "Login",
-                Parameters = "string username, string hashedPassword, string xmlFile",
-                ReturnType = "string",
+                Parameters = "string username, string hashedPassword, string xmlUserFile, string xmlLogAttemptFile",
+                ReturnType = "AuthResult: Success(bool) Message(string)",
                 Description = "Validates a user's credentials against XML file records",
                 TryItLink = "Login.aspx"
             },
@@ -107,7 +107,7 @@ namespace WordleWebApp
                 ComponentType = "Web Service (WSDL)",
                 Operation = "Register",
                 Parameters = "string username, string hashedPassword, string xmlFile",
-                ReturnType = "string",
+                ReturnType = "AuthResult: Success(bool) Message(string)",
                 Description = "Adds a username and password to an XML file, to be logged into later",
                 TryItLink = "Login.aspx"
             },
@@ -146,7 +146,7 @@ namespace WordleWebApp
             else
             {
                 // Not logged in - redirect to login
-                Response.Redirect("Login.aspx");
+                 Response.Redirect("Login.aspx");
 
                 //lblUsername.Text = "Not Logged in";
             }

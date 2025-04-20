@@ -12,7 +12,15 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+        }
+        .test-info {
+            text-align: center;
+            background-color: #e9f7ef;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 15px;
         }
         .container {
             background: #fff;
@@ -70,6 +78,10 @@
 </head>
 <body>
     <form id="form1" runat="server" class="container">
+
+        <div class="test-info">
+            <p><strong>Test User:</strong> Username: <code>test</code> Password: <code>test</code></p>
+        </div>
         <div class="login-section">
             <h3>Returning Users</h3>
             <div class="form-group">
