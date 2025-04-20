@@ -8,6 +8,12 @@
 
     <p>Welcome to our webapp. Users can log in and register to play games</p>
     <h3>Service Directory</h3>
+    <asp:Label 
+        ID="lblDisclaimer" 
+        runat="server" 
+        CssClass="disclaimer" 
+        Text="Disclaimer: Some functionality (cookies & Word‑generation) relies on services implemented by Alex Alvarado." />
+
     <asp:GridView ID="ServiceDirectoryGrid" runat="server" AutoGenerateColumns="False">
         <Columns>
             <asp:BoundField DataField="Provider" HeaderText="Provider" />
