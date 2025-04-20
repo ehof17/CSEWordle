@@ -94,7 +94,6 @@ namespace WordleLogicServiceApplication
                 else
                 {
                     guessLetter[i].Status = WordLetter.LetterStatus.IncorrectLetter;
-                    guessLetter[i].Position = i;
                 }
             }
 
@@ -120,36 +119,6 @@ namespace WordleLogicServiceApplication
                 return true;
             }
             return false;
-        }
-
-        //Written by Alex Alvarado
-        public List<WordLetter> ConvertToDisplay(List<WordLetter> guess)
-        {
-            List<WordLetter> display = new List<WordLetter>();
-            for (int i = 0; i < guess.Count; i++)
-            {
-                char displayChar;
-                if (guess[i].Status == WordLetter.LetterStatus.CorrectLetter)
-                {
-                    displayChar = guess[i].Letter;
-                }
-                else if (guess[i].Status == WordLetter.LetterStatus.CorrectLetterWrongSpot)
-                {
-                    displayChar = '?';
-
-                }
-                else if (guess[i].Status == WordLetter.LetterStatus.IncorrectLetter)
-                {
-                    displayChar = '_';
-                }
-                else
-                {
-                    Console.WriteLine("Something went wrong in convertToDisplay()");
-                    displayChar = ' ';
-                }
-                display.Add(new WordLetter(displayChar));
-            }
-            return display;
         }
     }
 }

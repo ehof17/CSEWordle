@@ -34,7 +34,7 @@ namespace WordleWebApp
                 Parameters = "string filepath",
                 ReturnType = "string",
                 Description = "This function generates a random word from the list of words in word.txt in app data",
-                TryItLink = "Member.aspx"
+                TryItLink = "WordleLogicTryIt.aspx"
             },
             new ServiceEntry
             {
@@ -53,8 +53,8 @@ namespace WordleWebApp
                 Operation = "WordGuessChecker",
                 Parameters = "string userGuess, string actualWord",
                 ReturnType = "WordLetter[]",
-                Description = "Takes a users guess and the actaul generated word and compares them and creates a list that holds WordLetters that have the status of each letter",
-                TryItLink = "Member.aspx"
+                Description = "Takes a users guess and the actual generated word and compares them and creates a list that holds WordLetters that have the status of each letter",
+                TryItLink = "WordleLogicTryIt.aspx"
             },
             new ServiceEntry
             {
@@ -110,16 +110,7 @@ namespace WordleWebApp
                 TryItLink = "Login.aspx"
             },
 
-            new ServiceEntry
-            {
-                Provider = "Jomi Ayeni",
-                ComponentType = "",
-                Operation = "",
-                Parameters = "N/A",
-                ReturnType = "N/A",
-                Description = "",
-                TryItLink = "x"
-            },
+      
 
              
 

@@ -102,6 +102,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="WordleLogicTryIt.aspx" />
     <None Include="App_Data\Users.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -298,6 +299,13 @@
     </Compile>
     <Compile Include="ViewSwitcher.ascx.designer.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="WordleLogicTryIt.aspx.cs">
+      <DependentUpon>WordleLogicTryIt.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WordleLogicTryIt.aspx.designer.cs">
+      <DependentUpon>WordleLogicTryIt.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup />
