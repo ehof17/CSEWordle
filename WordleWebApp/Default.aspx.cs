@@ -26,17 +26,7 @@ namespace WordleWebApp
                     List<ServiceEntry> entries = new List<ServiceEntry>
         {
 
-                         new ServiceEntry
-            {
-                Provider = "Alex Alvarado",
-                ComponentType = "Web Service (WSDL)",
-                Operation = "GenerateWord",
-                Parameters = "string filepath",
-                ReturnType = "string",
-                Description = "This function generates a random word from the list of words in word.txt in app data",
-                TryItLink = "WordleLogicTryIt.aspx"
-            },
-            new ServiceEntry
+                new ServiceEntry
             {
                 Provider = "Alex Alvarado",
                 ComponentType = "Cookies",
@@ -46,14 +36,36 @@ namespace WordleWebApp
                 Description = "When a user registers they can opt in to using cookies and their username will be saved next time they log in",
                 TryItLink = "Login.aspx"
             },
+
             new ServiceEntry
+            {
+                 Provider = "Alex Alvarado",
+                ComponentType = "User Control",
+                Operation = "Staff page",
+                Parameters = "NA",
+                ReturnType = "NA",
+                Description = "Created the Staff page, a page where staff can enter new words to be used by the game",
+                TryItLink = "Staff.aspx"
+            },
+                  new ServiceEntry
+            {
+                Provider = "Alex Alvarado",
+                ComponentType = "Web Service (WSDL)",
+                Operation = "GenerateWord",
+                Parameters = "string filepath",
+                ReturnType = "string",
+                Description = "This function generates a random word from the list of words in word.txt in app data",
+                TryItLink = "WordleLogicTryIt.aspx"
+            },
+
+              new ServiceEntry
             {
                 Provider = "Alex Alvarado",
                 ComponentType = "Web Service (WSDL)",
                 Operation = "WordGuessChecker",
                 Parameters = "string userGuess, string actualWord",
                 ReturnType = "WordLetter[]",
-                Description = "Takes a users guess and the actual generated word and compares them and creates a list that holds WordLetters that have the status of each letter",
+                Description = "Takes a users guess and the actaul generated word and compares them and creates a list that holds WordLetters that have the status of each letter",
                 TryItLink = "WordleLogicTryIt.aspx"
             },
             new ServiceEntry
@@ -67,6 +79,16 @@ namespace WordleWebApp
                 TryItLink = "Staff.aspx"
             },
 
+              new ServiceEntry
+            {
+                Provider = "Eli Hoffman",
+                ComponentType = "DLL Function",
+                Operation = "HashPassword",
+                Parameters = "string password",
+                ReturnType = "string",
+                Description = "Hashes the password using SHA-256",
+                TryItLink = "HashPassword.aspx"
+            },
 
 
             new ServiceEntry
@@ -89,16 +111,7 @@ namespace WordleWebApp
                 Description = "Adds a username and password to an XML file, to be logged into later",
                 TryItLink = "Login.aspx"
             },
-            new ServiceEntry
-            {
-                Provider = "Eli Hoffman",
-                ComponentType = "DLL Function",
-                Operation = "HashPassword",
-                Parameters = "string password",
-                ReturnType = "string",
-                Description = "Hashes the password using SHA-256",
-                TryItLink = "HashPassword.aspx"
-            },
+
              new ServiceEntry
             {
                 Provider = "Eli Hoffman",
@@ -110,9 +123,21 @@ namespace WordleWebApp
                 TryItLink = "Login.aspx"
             },
 
-      
+             new ServiceEntry
+             {
 
-             
+                 Provider= "Eli Hoffman",
+                 ComponentType= "User Control",
+                 Operation = "Member page",
+                Parameters = "N/A",
+                ReturnType = "N/A",
+                Description = "Allows user to play Wordle",
+                TryItLink = "Member.aspx"
+
+             },
+
+
+
 
 
 
