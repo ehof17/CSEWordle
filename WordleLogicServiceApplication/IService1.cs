@@ -20,7 +20,11 @@ namespace WordleLogicServiceApplication
         [OperationContract]
         List<WordLetter> WordGuessChecker(string userGuess, string actualWord);
 
-   
+        [OperationContract]
+        List<WordLetter> ConvertToDisplay(List<WordLetter> guess);
+
+        [OperationContract]
+        string GetHint(string actualWord, List<int> revealedPositions);
 
     }
     [DataContract]
@@ -32,7 +36,8 @@ namespace WordleLogicServiceApplication
         [DataMember]
         public LetterStatus Status { get; set; }
 
-    
+        [DataMember]
+        public int Position { get; set; }
 
         public enum LetterStatus
         {
@@ -46,7 +51,7 @@ namespace WordleLogicServiceApplication
         {
             Letter = letter;
             Status = LetterStatus.Unknown;
-         
+            Position = 0;
         }
     }
 }

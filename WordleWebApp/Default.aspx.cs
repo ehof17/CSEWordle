@@ -146,7 +146,7 @@ namespace WordleWebApp
             else
             {
                 // Not logged in - redirect to login
-                 Response.Redirect("Login.aspx");
+                // Response.Redirect("Login.aspx");
 
                 //lblUsername.Text = "Not Logged in";
             }

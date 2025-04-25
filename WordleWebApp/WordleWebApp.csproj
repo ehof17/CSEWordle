@@ -103,6 +103,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\LoginAttempts.xml" />
+    <Content Include="App_Data\Staff.xml" />
+    <None Include="Connected Services\HelperServiceReference\Service1.disco" />
+    <None Include="Connected Services\HelperServiceReference\configuration91.svcinfo" />
+    <None Include="Connected Services\HelperServiceReference\configuration.svcinfo" />
+    <None Include="Connected Services\HelperServiceReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <Content Include="Logout.aspx" />
     <Content Include="WordleLogicTryIt.aspx" />
     <None Include="App_Data\LoginAttempts.xsd">
       <SubType>Designer</SubType>
@@ -132,6 +141,16 @@
     <Content Include="Connected Services\AuthServiceReferenceAsuHosted\WordleWebApp.AuthServiceReferenceAsuHosted.AuthResult.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
+    <None Include="Connected Services\HelperServiceReference\Service1.wsdl" />
+    <None Include="Connected Services\HelperServiceReference\Service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\HelperServiceReference\Service11.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\HelperServiceReference\Service12.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Connected Services\WordleLogicServiceReference\Service1.disco" />
     <None Include="Connected Services\WordleLogicServiceReference\configuration91.svcinfo" />
     <None Include="Connected Services\WordleLogicServiceReference\configuration.svcinfo" />
@@ -245,6 +264,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Connected Services\HelperServiceReference\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Connected Services\WordleLogicServiceReference\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -273,6 +297,13 @@
     </Compile>
     <Compile Include="Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Logout.aspx.cs">
+      <DependentUpon>Logout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Logout.aspx.designer.cs">
+      <DependentUpon>Logout.aspx</DependentUpon>
     </Compile>
     <Compile Include="Member.aspx.cs">
       <DependentUpon>Member.aspx</DependentUpon>
@@ -341,6 +372,7 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Connected Services\AuthServiceReferenceAsuHosted\" />
+    <WCFMetadataStorage Include="Connected Services\HelperServiceReference\" />
     <WCFMetadataStorage Include="Connected Services\WordleLogicServiceReference\" />
   </ItemGroup>
   <PropertyGroup>
@@ -358,7 +390,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50687</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>https://localhost:44340/</IISUrl>
+          <IISUrl>http://localhost:44340/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

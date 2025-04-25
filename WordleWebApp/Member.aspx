@@ -93,15 +93,19 @@
 </head>
 <body>
     <form id="form1" runat="server" class="container" defaultbutton="submitGuessBtn">
-        <h1>Wordle Game</h1>
+       <h1>Wordle Game</h1>
         <div class="actions">
             <asp:Button ID="gameGeneratorBtn" runat="server" Text="New Game" OnClick="gameGeneratorBtn_Click" CssClass="btn" />
             <asp:Button ID="backButton" runat="server" Text="Back" OnClick="backButton_Click" CssClass="btn" />
+             <asp:Button ID="logoutBtn" runat="server" Text="Logout" PostBackUrl="~/Logout.aspx" />
         </div>
         <div class="guess-input">
             <asp:TextBox ID="guessTextBox" runat="server" MaxLength="5" CssClass="form-control" placeholder="Enter guess"></asp:TextBox>
             <asp:Button ID="submitGuessBtn" runat="server" Text="Submit" OnClick="submitGuessBtn_Click" CssClass="btn" />
+            <asp:Button ID="hintBtn" runat="server" Text="Get a Hint" OnClick="hintBtn_Click" />
+            <asp:Label ID="testLbl" runat="server" />
         </div>
+          
         <div class="result">
             <asp:Label ID="resultLbl" runat="server" Text="" />
         </div>
@@ -111,6 +115,7 @@
         <div class="keyboard">
             <asp:Literal ID="keyboardLiteral" runat="server" />
         </div>
+    </form>
     </form>
 </body>
 </html>

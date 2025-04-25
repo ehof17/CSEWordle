@@ -18,6 +18,12 @@ namespace WordleWebApp
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!User.Identity.IsAuthenticated || ( !User.IsInRole("Member") && !User.IsInRole("Admin") ))
+            {
+                Response.Redirect("Login.aspx");
+            }
+            
+
             // When the page is first loaded (not on postback), start a new game.
             if (!IsPostBack)
             {
@@ -28,13 +34,22 @@ namespace WordleWebApp
         private void StartNewGame()
         {
             string filePath = Server.MapPath("~/App_Data/words.txt");
-            Service1Client logicClient = new Service1Client();
-            string generatedWord = logicClient.GenerateWord(filePath).ToLower();
+            string generatedWord = "testw";
+            try
+            {
+                Service1Client logicClient = new Service1Client();
+                generatedWord = logicClient.GenerateWord(filePath).ToLower();
+            }
+            catch
+            {
 
+            }
 
             Session["ActualWord"] = generatedWord;
             Session["CurrentGuessIndex"] = 0;
             Session["PastGuesses"] = new List<string>();
+            Session["HintPositions"] = new HashSet<int>();
+
 
             ResetKeyboad();
             keyboardLiteral.Text = BuildKeyboardHTML();
@@ -269,6 +284,39 @@ namespace WordleWebApp
 
             Session["KeyboardState"] = keyboardState;
         }
+
+        protected void hintBtn_Click(object sender, EventArgs e)
+        {
+            string actualWord = (string)Session["ActualWord"];
+            HashSet<int> hintPositions = (HashSet<int>)Session["HintPositions"];
+
+            // Reveal a letter in a random position that hasn't been revealed yet
+            Random rand = new Random();
+            int position = -1;
+
+            List<int> availablePositions = new List<int>();
+            for (int i = 0; i < actualWord.Length; i++)
+            {
+                if (!hintPositions.Contains(i))
+                {
+                    availablePositions.Add(i);
+                }
+            }
+
+            if (availablePositions.Count == 0)
+            {
+                resultLbl.Text = "No more hints available!";
+                return;
+            }
+
+            position = availablePositions[rand.Next(availablePositions.Count)];
+            hintPositions.Add(position);
+            Session["HintPositions"] = hintPositions;
+
+            char revealedLetter = actualWord[position];
+            resultLbl.Text = $"Hint: The letter at position {position + 1} is '{char.ToUpper(revealedLetter)}'.";
+        }
+
 
         protected void backButton_Click(object sender, EventArgs e)
         {

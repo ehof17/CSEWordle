@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using WordleLogic;
@@ -13,7 +14,10 @@ namespace WordleWebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!User.Identity.IsAuthenticated || !User.IsInRole("Staff"))
+            {
+                Response.Redirect("Login.aspx");
+            }
         }
 
         protected void addWordBtn_Click(object sender, EventArgs e)

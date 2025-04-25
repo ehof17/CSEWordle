@@ -94,6 +94,7 @@ namespace WordleLogicServiceApplication
                 else
                 {
                     guessLetter[i].Status = WordLetter.LetterStatus.IncorrectLetter;
+                    guessLetter[i].Position = i;
                 }
             }
 
@@ -120,5 +121,54 @@ namespace WordleLogicServiceApplication
             }
             return false;
         }
+
+        //Written by Alex Alvarado
+        public List<WordLetter> ConvertToDisplay(List<WordLetter> guess)
+        {
+            List<WordLetter> display = new List<WordLetter>();
+            for (int i = 0; i < guess.Count; i++)
+            {
+                char displayChar;
+                if (guess[i].Status == WordLetter.LetterStatus.CorrectLetter)
+                {
+                    displayChar = guess[i].Letter;
+                }
+                else if (guess[i].Status == WordLetter.LetterStatus.CorrectLetterWrongSpot)
+                {
+                    displayChar = '?';
+
+                }
+                else if (guess[i].Status == WordLetter.LetterStatus.IncorrectLetter)
+                {
+                    displayChar = '_';
+                }
+                else
+                {
+                    Console.WriteLine("Something went wrong in convertToDisplay()");
+                    displayChar = ' ';
+                }
+                display.Add(new WordLetter(displayChar));
+            }
+            return display;
+        }
+
+        //Written by Jomi Ayeni
+        public string GetHint(string actualWord, List<int> revealedPositions)
+        {
+            if (string.IsNullOrEmpty(actualWord)) return "No word provided.";
+
+            for (int i = 0; i < actualWord.Length; i++)
+            {
+                if (!revealedPositions.Contains(i))
+                {
+                    revealedPositions.Add(i); 
+                    char hintChar = actualWord[i];
+                    return $"Hint: The letter at position {i + 1} is '{char.ToUpper(hintChar)}'";
+                }
+            }
+
+            return "All letters have already been revealed!";
+        }
+
     }
 }

@@ -103,7 +103,7 @@
         <div class="register-section">
             <h3>New Users</h3>
             <div class="form-group">
-                <asp:Label ID="lblUsernameRegister" runat="server" Text="Username:" AssociatedControlID="txtUsernameRegister" />
+                <asp:Label ID="lblUsernameRegister" runat="server" />
                 <asp:TextBox ID="txtUsernameRegister" runat="server" CssClass="form-control" />
             </div>
             <div class="form-group">

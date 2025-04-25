@@ -9,6 +9,7 @@ using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
 using System.Web;
+using System.Web.Hosting;
 using Grpc.Core;
 
 
@@ -20,6 +21,8 @@ namespace AuthenticationService
     {
 
         private static readonly object attemptLock = new object();
+        string userXmlPath = HostingEnvironment.MapPath("~/App_Data/Users.xml");
+        string attemptsXmlPath = HostingEnvironment.MapPath("~/App_Data/LoginAttempts.xml");
         // Max attempts 5 in a 10 minute window.
         private const int maxAttempts = 5;
         private static readonly TimeSpan attemptWindow = TimeSpan.FromMinutes(10);
