@@ -103,6 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\LoginAttempts.xml" />
+    <Content Include="App_Data\Members.xml" />
     <Content Include="App_Data\Staff.xml" />
     <None Include="Connected Services\HelperServiceReference\Service1.disco" />
     <None Include="Connected Services\HelperServiceReference\configuration91.svcinfo" />
