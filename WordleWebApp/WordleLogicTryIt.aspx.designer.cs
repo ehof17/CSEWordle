@@ -11,7 +11,7 @@ namespace WordleWebApp
 {
 
 
-    public partial class Member
+    public partial class WordleLogicTryIt
     {
 
         /// <summary>
@@ -24,93 +24,102 @@ namespace WordleWebApp
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
 
         /// <summary>
-        /// gameGeneratorBtn control.
+        /// txtGenerateFilePath control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button gameGeneratorBtn;
+        protected global::System.Web.UI.WebControls.TextBox txtGenerateFilePath;
 
         /// <summary>
-        /// backButton control.
+        /// btnGenerateWord control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button backButton;
+        protected global::System.Web.UI.WebControls.Button btnGenerateWord;
 
         /// <summary>
-        /// logoutBtn control.
+        /// lblGenerateResult control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button logoutBtn;
+        protected global::System.Web.UI.WebControls.Label lblGenerateResult;
 
         /// <summary>
-        /// guessTextBox control.
+        /// txtValidFilePath control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox guessTextBox;
+        protected global::System.Web.UI.WebControls.TextBox txtValidFilePath;
 
         /// <summary>
-        /// submitGuessBtn control.
+        /// txtGuess control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button submitGuessBtn;
+        protected global::System.Web.UI.WebControls.TextBox txtGuess;
 
         /// <summary>
-        /// hintBtn control.
+        /// btnIsValid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button hintBtn;
+        protected global::System.Web.UI.WebControls.Button btnIsValid;
 
         /// <summary>
-        /// testLbl control.
+        /// lblIsValid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label testLbl;
+        protected global::System.Web.UI.WebControls.Label lblIsValid;
 
         /// <summary>
-        /// resultLbl control.
+        /// txtUserGuess control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label resultLbl;
+        protected global::System.Web.UI.WebControls.TextBox txtUserGuess;
 
         /// <summary>
-        /// guessesPanel control.
+        /// txtActualWord control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel guessesPanel;
+        protected global::System.Web.UI.WebControls.TextBox txtActualWord;
 
         /// <summary>
-        /// keyboardLiteral control.
+        /// btnCheckGuess control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal keyboardLiteral;
+        protected global::System.Web.UI.WebControls.Button btnCheckGuess;
+
+        /// <summary>
+        /// gvGuessResults control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView gvGuessResults;
     }
 }

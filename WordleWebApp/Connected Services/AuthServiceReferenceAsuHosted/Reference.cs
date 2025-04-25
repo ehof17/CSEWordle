@@ -9,23 +9,86 @@
 //------------------------------------------------------------------------------
 
 namespace WordleWebApp.AuthServiceReferenceAsuHosted {
+    using System.Runtime.Serialization;
+    using System;
     
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="AuthResult", Namespace="http://schemas.datacontract.org/2004/07/AuthenticationService")]
+    [System.SerializableAttribute()]
+    public partial class AuthResult : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool SuccessField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string MessageField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool Success {
+            get {
+                return this.SuccessField;
+            }
+            set {
+                if ((this.SuccessField.Equals(value) != true)) {
+                    this.SuccessField = value;
+                    this.RaisePropertyChanged("Success");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+        public string Message {
+            get {
+                return this.MessageField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.MessageField, value) != true)) {
+                    this.MessageField = value;
+                    this.RaisePropertyChanged("Message");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="AuthServiceReferenceAsuHosted.IService1")]
     public interface IService1 {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/Login", ReplyAction="http://tempuri.org/IService1/LoginResponse")]
-        string Login(string username, string password, string userXmlPath);
+        WordleWebApp.AuthServiceReferenceAsuHosted.AuthResult Login(string username, string password, string userXmlPath, string logAttemptsPath);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/Login", ReplyAction="http://tempuri.org/IService1/LoginResponse")]
-        System.Threading.Tasks.Task<string> LoginAsync(string username, string password, string userXmlPath);
+        System.Threading.Tasks.Task<WordleWebApp.AuthServiceReferenceAsuHosted.AuthResult> LoginAsync(string username, string password, string userXmlPath, string logAttemptsPath);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/Register", ReplyAction="http://tempuri.org/IService1/RegisterResponse")]
-        string Register(string username, string password, string userXmlPath);
+        WordleWebApp.AuthServiceReferenceAsuHosted.AuthResult Register(string username, string password, string userXmlPath);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/Register", ReplyAction="http://tempuri.org/IService1/RegisterResponse")]
-        System.Threading.Tasks.Task<string> RegisterAsync(string username, string password, string userXmlPath);
+        System.Threading.Tasks.Task<WordleWebApp.AuthServiceReferenceAsuHosted.AuthResult> RegisterAsync(string username, string password, string userXmlPath);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -55,19 +118,19 @@ namespace WordleWebApp.AuthServiceReferenceAsuHosted {
                 base(binding, remoteAddress) {
         }
         
-        public string Login(string username, string password, string userXmlPath) {
-            return base.Channel.Login(username, password, userXmlPath);
+        public WordleWebApp.AuthServiceReferenceAsuHosted.AuthResult Login(string username, string password, string userXmlPath, string logAttemptsPath) {
+            return base.Channel.Login(username, password, userXmlPath, logAttemptsPath);
         }
         
-        public System.Threading.Tasks.Task<string> LoginAsync(string username, string password, string userXmlPath) {
-            return base.Channel.LoginAsync(username, password, userXmlPath);
+        public System.Threading.Tasks.Task<WordleWebApp.AuthServiceReferenceAsuHosted.AuthResult> LoginAsync(string username, string password, string userXmlPath, string logAttemptsPath) {
+            return base.Channel.LoginAsync(username, password, userXmlPath, logAttemptsPath);
         }
         
-        public string Register(string username, string password, string userXmlPath) {
+        public WordleWebApp.AuthServiceReferenceAsuHosted.AuthResult Register(string username, string password, string userXmlPath) {
             return base.Channel.Register(username, password, userXmlPath);
         }
         
-        public System.Threading.Tasks.Task<string> RegisterAsync(string username, string password, string userXmlPath) {
+        public System.Threading.Tasks.Task<WordleWebApp.AuthServiceReferenceAsuHosted.AuthResult> RegisterAsync(string username, string password, string userXmlPath) {
             return base.Channel.RegisterAsync(username, password, userXmlPath);
         }
     }

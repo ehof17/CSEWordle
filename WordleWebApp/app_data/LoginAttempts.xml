@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LoginAttempts  xmlns="http://schemas.datacontract.org/2004/07/AuthenticationService">
+	<Attempt>
+		<UtcTime>2025-04-20T10:45:00Z</UtcTime>
+		<Username>eli</Username>
+		<Success>true</Success>
+	</Attempt>
+</LoginAttempts>

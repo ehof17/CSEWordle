@@ -19,11 +19,12 @@ namespace Security
 
                 StringBuilder sb = new StringBuilder();
                 foreach (byte b in hashBytes)
-                    sb.Append(b.ToString("x2"));
-                return sb.ToString();
+                    sb.Append(b.ToString("x2")); // Convert byte to lowercase hex string
+                return sb.ToString(); // convert final hash to string
             }
         }
 
+        // verifies that the password matches the hash it would receive
         public static bool VerifyPassword(string enteredPassword, string storedHash)
         {
             string hashed = HashPassword(enteredPassword);

@@ -17,5 +17,15 @@ namespace WordleWebApp
         {
             lblOutput.Text = Security.PasswordHasher.HashPassword(txtInput.Text);
         }
+        protected void btnVerify_Click(object sender, EventArgs e)
+        {
+            bool isValid = Security.PasswordHasher.VerifyPassword(
+                               txtVerifyPassword.Text,
+                               txtStoredHash.Text);
+
+            lblVerifyResult.Text = isValid
+                ? "Password is valid"
+                : "Password does not match";
+        }
     }
 }
