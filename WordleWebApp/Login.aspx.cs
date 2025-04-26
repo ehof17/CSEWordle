@@ -2,16 +2,20 @@
 using System;
 using System.Web;
 using System.Net;
-using WordleWebApp.AuthServiceReferenceAsuHosted;
+using WordleWebApp.AuthServiceReference2;
 using Security;
 using System.Web.Security;
 using System.Collections.Generic;
 using System.Security.Principal;
+using System.IO;
 namespace WordleWebApp
 {
 
     public partial class Login : System.Web.UI.Page
     {
+        public static readonly object UsersLock = new object();
+        public static readonly object AttemptsLock = new object();
+
         protected void Page_Load(object sender, EventArgs e)
         {
             HttpCookie myCookies = Request.Cookies["myCookieId"];
@@ -41,12 +45,21 @@ namespace WordleWebApp
             HttpCookie myCookies = new HttpCookie("myCookieId");
 
             string hashed = PasswordHasher.HashPassword(password);
-            Service1Client authClient = new Service1Client();
+            AuthServiceReference2.Service1Client authClient = new AuthServiceReference2.Service1Client();
+            string usersXMLpath = Server.MapPath("~/App_Data/Users.xml");
+            string usersXML = File.ReadAllText(usersXMLpath);
 
 
+            RegisterResponse res = authClient.Register(username, hashed, usersXML);
+            // Write the updated file back
+            lock (UsersLock)
+            {
+                File.WriteAllText(usersXMLpath, res.UsersXml);
+            }
 
-            AuthResult res = authClient.Register(username, hashed, Server.MapPath("~/App_Data/Users.xml"));
-            if (res.Success)
+
+      
+            if (res.Result.Success)
             {
                 if (saveUsernameCB.Checked)
                 {
@@ -64,7 +77,7 @@ namespace WordleWebApp
             }
             else
             {
-                lblRegisterError.Text = res.Message;
+                lblRegisterError.Text = res.Result.Message;
             }
         }
 
@@ -76,23 +89,36 @@ namespace WordleWebApp
 
             string hashed = PasswordHasher.HashPassword(password);
             Service1Client authClient = new Service1Client();
+            string attemptsPath = Server.MapPath("~/App_Data/LoginAttempts.xml");
+            string staffXMLPath = Server.MapPath("~/App_Data/Staff.xml");
+            string usersXMLPath = Server.MapPath("~/App_Data/Users.xml");
 
-            AuthResult memberRes = authClient.Login(username, hashed,
-                           Server.MapPath("~/App_Data/Users.xml"),
-                           Server.MapPath("~/App_Data/LoginAttempts.xml"));
 
-            AuthResult staffRes = authClient.Login(username, hashed,
-                                 Server.MapPath("~/App_Data/Staff.xml"),
-                                 Server.MapPath("~/App_Data/LoginAttempts.xml"));
+            string staffXml = File.ReadAllText(staffXMLPath);
+            string usersXML = File.ReadAllText(usersXMLPath);
+            string attempts = File.ReadAllText(attemptsPath);
+           
+            
+
+            LoginResponse memberRes = authClient.Login(username, hashed, usersXML, attempts);
+            LoginResponse staffRes = authClient.Login(username, hashed, staffXml, attempts);
+
+            lock (AttemptsLock)
+            {
+                File.WriteAllText(attemptsPath, memberRes.AttemptsXml);
+            }
+              
+
+         
 
             // Build a role list
             var roles = new List<string>();
-            if (memberRes.Success) roles.Add("Member");
-            if (staffRes.Success) roles.Add("Staff");
+            if (memberRes.Result.Success) roles.Add("Member");
+            if (staffRes.Result.Success) roles.Add("Staff");
 
             if (roles.Count == 0)
             {
-                lblError.Text = memberRes.Message;
+                lblError.Text = memberRes.Result.Message;
                 return;
             }
 

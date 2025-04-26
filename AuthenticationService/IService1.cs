@@ -14,9 +14,9 @@ namespace AuthenticationService
     {
 
         [OperationContract]
-        AuthResult Login(string username, string password, string userXmlPath, string logAttemptsPath);
+        LoginResponse Login(string username, string password, string userXml, string logAttempts);
         [OperationContract]
-        AuthResult Register(string username, string password, string userXmlPath);
+        RegisterResponse  Register(string username, string password, string userXml);
     }
 
 
@@ -44,7 +44,12 @@ namespace AuthenticationService
     [CollectionDataContract(Name = "Users", ItemName = "User")]
     public class UserList : List<User>
     {
-        
+        public UserList()               
+        {
+        }
+        public UserList(IEnumerable<User> collection) : base(collection)
+        {
+        }
     }
     [DataContract]
     public class LoginAttempt
@@ -66,5 +71,20 @@ namespace AuthenticationService
         [DataMember(Order = 1)]
         public string Message { get; set; }
 
+    }
+
+    [DataContract]
+    public class LoginResponse
+    {
+        [DataMember] public AuthResult Result { get; set; }
+        // Return the Attempts data for client
+        [DataMember] public string AttemptsXml { get; set; }
+    }
+
+    [DataContract]
+    public class RegisterResponse
+    {
+        [DataMember] public AuthResult Result { get; set; }
+        [DataMember] public string UsersXml { get; set; }
     }
 }
