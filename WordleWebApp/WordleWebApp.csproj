@@ -105,10 +105,33 @@
     <Content Include="App_Data\LoginAttempts.xml" />
     <Content Include="App_Data\Members.xml" />
     <Content Include="App_Data\Staff.xml" />
+    <None Include="Connected Services\AuthServiceReference2\Service1.wsdl" />
+    <None Include="Connected Services\AuthServiceReference2\Service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\AuthServiceReference2\Service11.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Connected Services\AuthServiceReference2\Service12.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Connected Services\AuthServiceReference2\WordleWebApp.AuthServiceReference2.LoginResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\AuthServiceReference2\WordleWebApp.AuthServiceReference2.RegisterResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
     <None Include="Connected Services\HelperServiceReference\Service1.disco" />
     <None Include="Connected Services\HelperServiceReference\configuration91.svcinfo" />
     <None Include="Connected Services\HelperServiceReference\configuration.svcinfo" />
     <None Include="Connected Services\HelperServiceReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Connected Services\AuthServiceReference2\Service1.disco" />
+    <None Include="Connected Services\AuthServiceReference2\configuration91.svcinfo" />
+    <None Include="Connected Services\AuthServiceReference2\configuration.svcinfo" />
+    <None Include="Connected Services\AuthServiceReference2\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
@@ -260,6 +283,11 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Connected Services\AuthServiceReference2\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Connected Services\AuthServiceReferenceAsuHosted\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -372,6 +400,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\AuthServiceReference2\" />
     <WCFMetadataStorage Include="Connected Services\AuthServiceReferenceAsuHosted\" />
     <WCFMetadataStorage Include="Connected Services\HelperServiceReference\" />
     <WCFMetadataStorage Include="Connected Services\WordleLogicServiceReference\" />

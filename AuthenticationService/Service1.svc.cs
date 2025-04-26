@@ -1,253 +1,172 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net.NetworkInformation;
 using System.Runtime.Serialization;
-using System.Security.Cryptography;
-using System.ServiceModel;
-using System.ServiceModel.Web;
-using System.Text;
-using System.Web;
-using System.Web.Hosting;
-using Grpc.Core;
-
-
+using System.Xml;
+using System;
+using System.Linq;
 namespace AuthenticationService
 {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in code, svc and config file together.
-    // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
     public class Service1 : IService1
     {
 
-        private static readonly object attemptLock = new object();
-        string userXmlPath = HostingEnvironment.MapPath("~/App_Data/Users.xml");
-        string attemptsXmlPath = HostingEnvironment.MapPath("~/App_Data/LoginAttempts.xml");
-        // Max attempts 5 in a 10 minute window.
-        private const int maxAttempts = 5;
-        private static readonly TimeSpan attemptWindow = TimeSpan.FromMinutes(10);
-        private static readonly DataContractSerializer attemptSerializer = new DataContractSerializer(typeof(LoginAttemptList));
-
-
-        // Gets all the log attempts from the xml file provided
-        private LoginAttemptList LoadAttempts(string attemptsFilePath)
+        // ---------- Login attempts ----------
+        private static readonly DataContractSerializer attemptSer =
+            new DataContractSerializer(typeof(LoginAttemptList));
+        private static LoginAttemptList LoadAttempts(string xml)
         {
-            if (!File.Exists(attemptsFilePath))
-                return new LoginAttemptList();
-
-            lock (attemptLock)
+            if (string.IsNullOrWhiteSpace(xml)) return new LoginAttemptList();
+            using (var r = XmlReader.Create(new StringReader(xml)))
             {
-                using (var s = File.OpenRead(attemptsFilePath))  
+                return (LoginAttemptList)attemptSer.ReadObject(r);
+            }
+        }
+        private static string SaveAttempts(LoginAttemptList list)
+        {
+            using (var sw = new StringWriter())
+            {
+                using (var w = XmlWriter.Create(sw))
                 {
-                    return (LoginAttemptList)attemptSerializer.ReadObject(s);
+                    attemptSer.WriteObject(w, list);
+                    w.Flush();
                 }
+
+                return sw.ToString();
             }
         }
 
-        // Saves all the log attempts to a file
-        private void SaveAttempts(LoginAttemptList attempts, string attemptsFilePath)
+        // ---------- Users ----------
+        private static readonly DataContractSerializer userSer =
+            new DataContractSerializer(typeof(UserList));
+        private static Dictionary<string, string> LoadUsers(string xml)
         {
-            lock (attemptLock)
+            if (string.IsNullOrWhiteSpace(xml))
+                return new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+            using (var r = XmlReader.Create(new StringReader(xml)))
             {
-                using (var s = File.Create(attemptsFilePath))   
+                var list = (UserList)userSer.ReadObject(r);
+                return list.ToDictionary(u => u.Username,
+                                    u => u.HashedPassword,
+                                    StringComparer.OrdinalIgnoreCase);
+            }
+
+
+
+        }
+        private static string SaveUsers(Dictionary<string, string> users)
+        {
+            var list = new UserList(
+                users.Select(kv => new User
                 {
-                    attemptSerializer.WriteObject(s, attempts);
-                }                                              
+                    Username = kv.Key,
+                    HashedPassword = kv.Value
+                }));
+            using (var sw = new StringWriter())
+            {
+                using (var w = XmlWriter.Create(sw))
+                {
+                    userSer.WriteObject(w, list);
+                    w.Flush();
+                }
+
+                return sw.ToString();
             }
         }
 
-        // Gets if the username was not attempted to be logged into today
-        private bool IsFirstAttemptOfDay(string username, string attemptsFilePath)
+        // rMax attempts: 5 in a 10 minute window
+        private const int MAX_ATTEMPTS = 5;
+        private static readonly TimeSpan WINDOW = TimeSpan.FromMinutes(10);
+
+        public LoginResponse Login(string username,
+                                   string hashedPassword,
+                                   string usersXml,
+                                   string attemptsXml)
         {
-            var attempts = LoadAttempts(attemptsFilePath);
-            DateTime today = DateTime.Now.Date;   
+            // decipher data
+            var users = LoadUsers(usersXml);
+            var attempts = LoadAttempts(attemptsXml);
 
-            return !attempts.Any(a =>
-                a.Username == username &&
-                a.UtcTime.ToLocalTime().Date == today);
-        }
+            // check if the request to log in is the first of the day
+            bool firstToday = !attempts.Any(a => a.Username.Equals(username,
+                                       StringComparison.OrdinalIgnoreCase) &&
+                                       a.UtcTime.ToLocalTime().Date == DateTime.Now.Date);
+            // Check if request is blocked -> too many incorrect attempts in the alloted window
+            bool blocked = attempts
+                .Count(a => a.Username.Equals(username,
+                                              StringComparison.OrdinalIgnoreCase) &&
+                            !a.Success &&
+                            a.UtcTime >= DateTime.UtcNow - WINDOW) >= MAX_ATTEMPTS;
 
+            if (blocked)
+                return new LoginResponse
+                {
+                    Result = new AuthResult
+                    {
+                        Success = false,
+                        Message = "Too many login attempts. Please try again later."
+                    },
+                    AttemptsXml = attemptsXml
+                };
 
-        // Gets if a particular username is blocked from logging in
-        // They can only have 5 incorrect attempts within a 10 minute window
-        private bool IsBlocked(string username, string attemptsFilePath)
-        {
-            var attempts = LoadAttempts(attemptsFilePath);
-            DateTime cutoff = DateTime.UtcNow - attemptWindow;
+            bool validUser = users.TryGetValue(username, out var storedHash);
+            bool successAuth = validUser && storedHash == hashedPassword;
 
-            int failures = attempts.Count(a =>
-                a.UtcTime >= cutoff &&
-                a.Username.Equals(username, StringComparison.OrdinalIgnoreCase) &&
-                !a.Success);
-
-            return failures >= maxAttempts;
-        }
-
-        // Gets all previous attempts, adds a new one, and saves the combined xml
-        private void RecordAttempt(string username,bool success, string attemptsFilePath)
-        {
-            var attempts = LoadAttempts(attemptsFilePath);
+            // record this attempt
             attempts.Add(new LoginAttempt
             {
-                UtcTime = DateTime.UtcNow,
                 Username = username,
-                Success = success
+                Success = successAuth,
+                UtcTime = DateTime.UtcNow
             });
-            SaveAttempts(attempts, attemptsFilePath);
-        }
 
-        public AuthResult Login(string username, string hashedPassword, string userXmlPath, string logAttemptsPath) 
-         {
-
-            if (IsBlocked(username,logAttemptsPath))
+            // prepare response
+            var resp = new LoginResponse
             {
-                return new AuthResult
+                Result = new AuthResult
                 {
-                    Success = false,
-                    Message = "Too many login attempts. Please try again later."
-                };
-            }
-
-            var users = LoadUsers(userXmlPath);
-            bool firstAttemptToday = IsFirstAttemptOfDay(username, logAttemptsPath);
-
-
-            // if username is invalid
-            if (!users.ContainsKey(username))
-            {
-                RecordAttempt(username,  false, logAttemptsPath);
-                // Give more details if its the first attempt of the day
-                return new AuthResult
-                {
-                    Success = false,
-                    Message = firstAttemptToday ? "Invalid username." : "Invalid username or password.",
-                };
-               
-            }
-
-
-            // if password is valid
-            string storedHashed = users[username];
-            if (storedHashed == hashedPassword)
-            {
-                RecordAttempt(username, true, logAttemptsPath);
-                return new AuthResult
-                {
-                    Success = true,
-                    Message = "Login successful."
-                };
-               
-            }
-            else
-            {
-                RecordAttempt(username, false, logAttemptsPath);
-                return new AuthResult
-                {
-                    Success = false,
-                    Message = firstAttemptToday ? "Invalid password." : "Invalid username or password.",
-                };
-            }
-        }
-        public AuthResult Register(string username, string password, string userXmlPath)
-        {
-            // get all the valid users
-            var users = LoadUsers(userXmlPath);
-
-            string validationError = ValidateUsername(username, users);
-            if (!string.IsNullOrEmpty(validationError))
-            {
-                return new AuthResult
-                {
-                    Success = false,
-                    Message = validationError
-                };
-               
-            }
-
-      
-            SaveUser(userXmlPath, username, password);
-            return new AuthResult
-            {
-                Success = false,
-                Message = "Registration successful."
+                    Success = successAuth,
+                    Message = successAuth
+                                ? "Login successful."
+                                // If first log in attempt of the day, give additional details
+                                : firstToday
+                                    ? (validUser ? "Invalid password." : "Invalid username.")
+                                    : "Invalid username or password."
+                },
+                AttemptsXml = SaveAttempts(attempts)
             };
-           
+            return resp;
         }
 
-
-
-        private Dictionary<string, string> LoadUsers(string xmlPath)
+        public RegisterResponse Register(string username,
+                                         string password,
+                                         string usersXml)
         {
-            if (!File.Exists(xmlPath))
-            {
-                // Create empty file with root Users tag
-                var emptyList = new UserList();
-                using (var stream = File.Create(xmlPath))
-                {
-                    var serializer = new DataContractSerializer(typeof(UserList));
-                    serializer.WriteObject(stream, emptyList);
-                }
+            var users = LoadUsers(usersXml);
 
-            }
-            Dictionary<string, string> users = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            if (File.Exists(xmlPath))
-            {
-                var serializer = new DataContractSerializer(typeof(UserList));
-                using (var stream = File.OpenRead(xmlPath))
+            string err = ValidateUsername(username, users);
+            if (!string.IsNullOrEmpty(err))
+                return new RegisterResponse
                 {
-                    var userList = (UserList)serializer.ReadObject(stream);
-                    foreach (var user in userList)
-                    {
-                        users[user.Username] = user.HashedPassword;
-                    }
-                }
-            }
-            return users;
+                    Result = new AuthResult { Success = false, Message = err },
+                    UsersXml = usersXml
+                };
+
+            users[username] = password;
+
+            return new RegisterResponse
+            {
+                Result = new AuthResult { Success = true, Message = "Registration successful." },
+                UsersXml = SaveUsers(users)
+            };
         }
-        private void SaveUser(string xmlPath, string username, string hashedPassword)
+
+        private static string ValidateUsername(string username,
+                                               Dictionary<string, string> users)
         {
-            UserList users = new UserList();
-
-            if (File.Exists(xmlPath))
-            {
-                var serializer = new DataContractSerializer(typeof(UserList));
-                using (var stream = File.OpenRead(xmlPath))
-                {
-                    users = (UserList)serializer.ReadObject(stream);
-                }
-            }
-
-            users.Add(new User { Username = username, HashedPassword = hashedPassword });
-
-            using (var stream = File.Create(xmlPath))
-            {
-                var serializer = new DataContractSerializer(typeof(UserList));
-                serializer.WriteObject(stream, users);
-            }
-        
-
-
-
-      
-        }
-        // Helper function ensures that the username doesn't already exist or includes an invalid character
-        private string ValidateUsername(string username, Dictionary<string, string> existingUsers)
-        {
-            if (existingUsers.ContainsKey(username))
-            {
-                return "User already exists.";
-            }
+            if (users.ContainsKey(username)) return "User already exists.";
             if (username.Contains(":") || username.Contains(","))
-            {
-                return "Username cannot include characters ':' or ',' ";
-            }
-            return string.Empty; // Valid username since no errors
+                return "Username cannot include ':' or ','.";
+            return string.Empty;
         }
-        
-      
-
     }
-
-
 }
-
