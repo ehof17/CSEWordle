@@ -16,6 +16,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordleLogicServiceApplicati
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "helper_service", "helper_service\helper_service.csproj", "{074749BF-A647-41C3-9EDD-F026188F02E6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MembersPage", "MembersPage\MembersPage.csproj", "{B570581D-E113-41B2-B281-7FC8EAA58C07}"
+	ProjectSection(ProjectDependencies) = postProject
+		{979AF65C-26BC-4776-83B7-90EF3483AD48} = {979AF65C-26BC-4776-83B7-90EF3483AD48}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StaffPage", "StaffPage\StaffPage.csproj", "{FFF5D539-05C2-4718-AA76-77D5A969B505}"
+	ProjectSection(ProjectDependencies) = postProject
+		{979AF65C-26BC-4776-83B7-90EF3483AD48} = {979AF65C-26BC-4776-83B7-90EF3483AD48}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +52,14 @@ Global
 		{074749BF-A647-41C3-9EDD-F026188F02E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{074749BF-A647-41C3-9EDD-F026188F02E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{074749BF-A647-41C3-9EDD-F026188F02E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B570581D-E113-41B2-B281-7FC8EAA58C07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B570581D-E113-41B2-B281-7FC8EAA58C07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B570581D-E113-41B2-B281-7FC8EAA58C07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B570581D-E113-41B2-B281-7FC8EAA58C07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFF5D539-05C2-4718-AA76-77D5A969B505}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFF5D539-05C2-4718-AA76-77D5A969B505}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFF5D539-05C2-4718-AA76-77D5A969B505}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFF5D539-05C2-4718-AA76-77D5A969B505}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
