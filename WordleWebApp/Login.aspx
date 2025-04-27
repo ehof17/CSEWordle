@@ -85,7 +85,7 @@
         <div class="login-section">
             <h3>Returning Users</h3>
             <div class="form-group">
-                <asp:Label ID="lblUsername" runat="server" Text="Username:" AssociatedControlID="txtUsername" />
+                <asp:Label ID="lblUsername" runat="server" Text="Username:" />
                 <asp:TextBox ID="txtUsername" runat="server" CssClass="form-control" />
             </div>
             <div class="form-group">

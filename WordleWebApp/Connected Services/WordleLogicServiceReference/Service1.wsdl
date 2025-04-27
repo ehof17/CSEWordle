@@ -5,6 +5,7 @@
       <xsd:import schemaLocation="http://webstrar47.fulton.asu.edu/Page2/Service1.svc?xsd=xsd0" namespace="http://tempuri.org/" />
       <xsd:import schemaLocation="http://webstrar47.fulton.asu.edu/Page2/Service1.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import schemaLocation="http://webstrar47.fulton.asu.edu/Page2/Service1.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/WordleLogicServiceApplication" />
+      <xsd:import schemaLocation="http://webstrar47.fulton.asu.edu/Page2/Service1.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IService1_GenerateWord_InputMessage">
@@ -31,6 +32,18 @@
   <wsdl:message name="IService1_ConvertToDisplay_OutputMessage">
     <wsdl:part name="parameters" element="tns:ConvertToDisplayResponse" />
   </wsdl:message>
+  <wsdl:message name="IService1_GetHint_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetHint" />
+  </wsdl:message>
+  <wsdl:message name="IService1_GetHint_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetHintResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService1_SaveWordToList_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveWordToList" />
+  </wsdl:message>
+  <wsdl:message name="IService1_SaveWordToList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveWordToListResponse" />
+  </wsdl:message>
   <wsdl:portType name="IService1">
     <wsdl:operation name="GenerateWord">
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/GenerateWord" message="tns:IService1_GenerateWord_InputMessage" />
@@ -47,6 +60,14 @@
     <wsdl:operation name="ConvertToDisplay">
       <wsdl:input wsaw:Action="http://tempuri.org/IService1/ConvertToDisplay" message="tns:IService1_ConvertToDisplay_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IService1/ConvertToDisplayResponse" message="tns:IService1_ConvertToDisplay_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetHint">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService1/GetHint" message="tns:IService1_GetHint_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService1/GetHintResponse" message="tns:IService1_GetHint_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveWordToList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService1/SaveWordToList" message="tns:IService1_SaveWordToList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService1/SaveWordToListResponse" message="tns:IService1_SaveWordToList_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IService1" type="tns:IService1">
@@ -80,6 +101,24 @@
     </wsdl:operation>
     <wsdl:operation name="ConvertToDisplay">
       <soap:operation soapAction="http://tempuri.org/IService1/ConvertToDisplay" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetHint">
+      <soap:operation soapAction="http://tempuri.org/IService1/GetHint" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveWordToList">
+      <soap:operation soapAction="http://tempuri.org/IService1/SaveWordToList" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

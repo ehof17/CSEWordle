@@ -18,140 +18,131 @@ namespace WordleWebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["Username"] != null)
+
+            if (!IsPostBack)
             {
-                lblUsername.Text = Session["Username"].ToString();
-                if (!IsPostBack)
+
+                if (Session["Username"] != null)
                 {
-                    List<ServiceEntry> entries = new List<ServiceEntry>
-        {
-
-                new ServiceEntry
-            {
-                Provider = "Alex Alvarado",
-                ComponentType = "Cookies",
-                Operation = "Saves username",
-                Parameters = "N/A",
-                ReturnType = "N/A",
-                Description = "When a user registers they can opt in to using cookies and their username will be saved next time they log in",
-                TryItLink = "Login.aspx"
-            },
-
-            new ServiceEntry
-            {
-                 Provider = "Alex Alvarado",
-                ComponentType = "User Control",
-                Operation = "Staff page",
-                Parameters = "NA",
-                ReturnType = "NA",
-                Description = "Created the Staff page, a page where staff can enter new words to be used by the game and where staff can add new staff users",
-                TryItLink = "Staff.aspx"
-            },
-
-                  new ServiceEntry
-            {
-                Provider = "Alex Alvarado",
-                ComponentType = "Web Service (WSDL)",
-                Operation = "GenerateWord",
-                Parameters = "string filepath",
-                ReturnType = "string",
-                Description = "This function generates a random word from the list of words in word.txt in app data",
-                TryItLink = "WordleLogicTryIt.aspx"
-            },
-
-              new ServiceEntry
-            {
-                Provider = "Alex Alvarado",
-                ComponentType = "Web Service (WSDL)",
-                Operation = "WordGuessChecker",
-                Parameters = "string userGuess, string actualWord",
-                ReturnType = "WordLetter[]",
-                Description = "Takes a users guess and the actaul generated word and compares them and creates a list that holds WordLetters that have the status of each letter",
-                TryItLink = "WordleLogicTryIt.aspx"
-            },
-            new ServiceEntry
-            {
-                Provider = "Alex Alvarado",
-                ComponentType = "Web Service (WSDL)",
-                Operation = "IsValidGuess",
-                Parameters = "string filePath, string guess",
-                ReturnType = "bool",
-                Description = "takes a users guess and checks whether it is in the list of guessable words in words.txt",
-                TryItLink = "Staff.aspx"
-            },
-
-              new ServiceEntry
-            {
-                Provider = "Eli Hoffman",
-                ComponentType = "DLL Function",
-                Operation = "HashPassword",
-                Parameters = "string password",
-                ReturnType = "string",
-                Description = "Hashes the password using SHA-256",
-                TryItLink = "HashPassword.aspx"
-            },
-
-
-            new ServiceEntry
-            {
-                Provider = "Eli Hoffman",
-                ComponentType = "Web Service (WSDL)",
-                Operation = "Login",
-                Parameters = "string username, string hashedPassword, string xmlUserFile, string xmlLogAttemptFile",
-                ReturnType = "AuthResult: Success(bool) Message(string)",
-                Description = "Validates a user's credentials against XML file records",
-                TryItLink = "Login.aspx"
-            },
-            new ServiceEntry
-            {
-                Provider = "Eli Hoffman",
-                ComponentType = "Web Service (WSDL)",
-                Operation = "Register",
-                Parameters = "string username, string hashedPassword, string xmlFile",
-                ReturnType = "AuthResult: Success(bool) Message(string)",
-                Description = "Adds a username and password to an XML file, to be logged into later",
-                TryItLink = "Login.aspx"
-            },
-
-             new ServiceEntry
-            {
-                Provider = "Eli Hoffman",
-                ComponentType = "User control",
-                Operation = "Login window",
-                Parameters = "N/A",
-                ReturnType = "N/A",
-                Description = "Allows user to log in and register",
-                TryItLink = "Login.aspx"
-            },
-
-             new ServiceEntry
-             {
-
-                 Provider= "Eli Hoffman",
-                 ComponentType= "User Control",
-                 Operation = "Member page",
-                Parameters = "N/A",
-                ReturnType = "N/A",
-                Description = "Allows user to play Wordle",
-                TryItLink = "Member.aspx"
-
-             },
-
-
-        };
-
-                    ServiceDirectoryGrid.DataSource = entries;
-                    ServiceDirectoryGrid.DataBind();
+                    lblUsername.Text = Session["Username"].ToString();
                 }
-            }
-            else
-            {
-                // Not logged in - redirect to login
-                // Response.Redirect("Login.aspx");
 
-                //lblUsername.Text = "Not Logged in";
+                // …inside Page_Load
+                List<ServiceEntry> entries = new List<ServiceEntry>
+{
+    new ServiceEntry
+    {
+        Provider       = "Alex Alvarado",
+        ComponentType  = "Cookies",
+        Operation      = "Saves username",
+        Parameters     = "N/A",
+        ReturnType     = "N/A",
+        Description    = "When a user registers they can opt-in to cookies; the username will be pre-filled next time.",
+        TryItLink      = "Login.aspx"
+    },
+    new ServiceEntry
+    {
+        Provider       = "Alex Alvarado",
+        ComponentType  = "User Control",
+        Operation      = "Staff page",
+        Parameters     = "N/A",
+        ReturnType     = "N/A",
+        Description    = "Allows staff to enter new words and add staff users.",
+        TryItLink      = "Staff.aspx"
+    },
+    new ServiceEntry
+    {
+        Provider       = "Alex Alvarado",
+        ComponentType  = "Web Service (WSDL)",
+        Operation      = "GenerateWord",
+        Parameters     = "string gameWordsXml",
+        ReturnType     = "string",
+        Description    = "Returns a random word from the supplied XML word list.",
+        TryItLink      = "WordleLogicTryIt.aspx"
+    },
+    new ServiceEntry
+    {
+        Provider       = "Alex Alvarado",
+        ComponentType  = "Web Service (WSDL)",
+        Operation      = "WordGuessChecker",
+        Parameters     = "string userGuess, string actualWord",
+        ReturnType     = "List<WordLetter>",
+        Description    = "Compares a guess to the actual word and returns letter-by-letter status objects.",
+        TryItLink      = "WordleLogicTryIt.aspx"
+    },
+    new ServiceEntry
+    {
+        Provider       = "Alex Alvarado",
+        ComponentType  = "Web Service (WSDL)",
+        Operation      = "IsValidGuess",
+        Parameters     = "string wordsXml - Filepath to words xml file, string guess",
+        ReturnType     = "ValidResponse (isValidWord bool, Message string)",
+        Description    = "Checks whether a guess exists in the XML list **or** an online dictionary.",
+        TryItLink      = "Staff.aspx"
+    },
+    new ServiceEntry
+    {
+        Provider       = "Eli Hoffman",
+        ComponentType  = "DLL Function",
+        Operation      = "HashPassword",
+        Parameters     = "string password",
+        ReturnType     = "string",
+        Description    = "Hashes the password using SHA-256.",
+        TryItLink      = "HashPassword.aspx"
+    },
+    new ServiceEntry
+    {
+        Provider       = "Eli Hoffman",
+        ComponentType  = "Web Service (WSDL)",
+        Operation      = "Login",
+        Parameters     = "string username, string hashedPassword, string xmlUserFile, string xmlLogAttemptFile",
+        ReturnType     = "AuthResult (Success bool, Message string)",
+        Description    = "Validates credentials against XML records.",
+        TryItLink      = "Login.aspx"
+    },
+    new ServiceEntry
+    {
+        Provider       = "Eli Hoffman",
+        ComponentType  = "Web Service (WSDL)",
+        Operation      = "Register",
+        Parameters     = "string username, string hashedPassword, string xmlFile",
+        ReturnType     = "AuthResult (Success bool, Message string)",
+        Description    = "Adds a username/password pair to an XML file.",
+        TryItLink      = "Login.aspx"
+    },
+    new ServiceEntry
+    {
+        Provider       = "Eli Hoffman",
+        ComponentType  = "User Control",
+        Operation      = "Login window",
+        Parameters     = "N/A",
+        ReturnType     = "N/A",
+        Description    = "UI for login and registration.",
+        TryItLink      = "Login.aspx"
+    },
+    new ServiceEntry
+    {
+        Provider       = "Eli Hoffman",
+        ComponentType  = "User Control",
+        Operation      = "Member page",
+        Parameters     = "N/A",
+        ReturnType     = "N/A",
+        Description    = "Game-play page for Wordle.",
+        TryItLink      = "Member.aspx"
+    }
+};
+
+                ServiceDirectoryGrid.DataSource = entries;
+                ServiceDirectoryGrid.DataBind();
+
+
+                ServiceDirectoryGrid.DataSource = entries;
+                ServiceDirectoryGrid.DataBind();
             }
         }
+    
+        
+        
 
         protected void btnGoToMember_Click(object sender, EventArgs e)
         {

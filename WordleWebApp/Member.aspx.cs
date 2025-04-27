@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Web.UI;
 using WordleWebApp.WordleLogicServiceReference;
 
@@ -33,16 +34,17 @@ namespace WordleWebApp
        
         private void StartNewGame()
         {
-            string filePath = Server.MapPath("~/App_Data/words.txt");
-            string generatedWord = "testw";
+            string filePath = Server.MapPath("~/App_Data/words.xml");
+            string words = File.ReadAllText(filePath);
+            string generatedWord = "";
             try
             {
                 Service1Client logicClient = new Service1Client();
-                generatedWord = logicClient.GenerateWord(filePath).ToLower();
+                generatedWord = logicClient.GenerateWord(words).ToLower();
             }
             catch
             {
-
+                generatedWord = "debug";
             }
 
             Session["ActualWord"] = generatedWord;
@@ -79,9 +81,13 @@ namespace WordleWebApp
             string userGuess = guessTextBox.Text.Trim().ToLower();
             Service1Client logicClient = new Service1Client();
             bool validGuess = false;
-            try { 
-                validGuess = logicClient.IsValidGuess(Server.MapPath("~/App_Data/words.txt"), userGuess);
+            string wordsPath = Server.MapPath("~/App_Data/words.xml");
 
+            string words = File.ReadAllText(wordsPath);
+
+            try { 
+                ValidResponse resp = logicClient.IsValidGuess(words, userGuess);
+                validGuess = resp.isValidWord;
             }
             catch
             {

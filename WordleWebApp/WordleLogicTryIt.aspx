@@ -26,7 +26,7 @@
       <div class="section">
         <h2>1. GenerateWord</h2>
         <div class="description">
-          Chooses a random word from a newline‑delimited file.
+          Chooses a random word from a provided xml file of words.
         </div>
         <div class="meta">
           <strong>Arguments:</strong><br />
@@ -46,7 +46,7 @@
       <div class="section">
         <h2>2. IsValidGuess</h2>
         <div class="description">
-          Checks whether the provided guess exists in the word list.
+          Checks whether the provided word is valid. Will check if it exists in the provided XML file, and if not it will check if it exists in a dictionary
         </div>
         <div class="meta">
           <strong>Arguments:</strong><br />

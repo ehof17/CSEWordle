@@ -12,10 +12,10 @@ namespace WordleLogicServiceApplication
     public interface IService1
     {
         [OperationContract]
-        string GenerateWord(string filePath);
+        string GenerateWord(string gameWordsXML);
 
         [OperationContract]
-        bool IsValidGuess(string filePath, string guess);
+        ValidResponse IsValidGuess(string wordsXML,  string guess);
 
         [OperationContract]
         List<WordLetter> WordGuessChecker(string userGuess, string actualWord);
@@ -25,6 +25,8 @@ namespace WordleLogicServiceApplication
 
         [OperationContract]
         string GetHint(string actualWord, List<int> revealedPositions);
+        [OperationContract]
+        string SaveWordToList(string existingWordXML, string wordToAdd, string username);
 
     }
     [DataContract]
@@ -52,6 +54,48 @@ namespace WordleLogicServiceApplication
             Letter = letter;
             Status = LetterStatus.Unknown;
             Position = 0;
+        }
+    }
+
+    [DataContract]
+    public class ValidResponse
+    {
+        [DataMember]
+        public bool isValidWord { get; set; }
+        [DataMember]
+        public string Message { get; set; }
+    }
+
+
+    [DataContract]
+    public class GameWord
+    {
+  
+
+        [DataMember(Order =0)]
+        public string Word
+        {
+            get;
+            set;
+        }
+
+        [DataMember(Order =1)]
+        public string UsernameAdded
+        {
+            get;
+            set;
+        }
+        [DataMember(Order = 2)] public DateTime TimeAdded { get; set; }
+ 
+    }
+    [CollectionDataContract(Name = "GameWords", ItemName = "GameWord")]
+    public class GameWordList : List<GameWord>
+    {
+        public GameWordList()
+        {
+        }
+        public GameWordList(IEnumerable<GameWord> collection) : base(collection)
+        {
         }
     }
 }

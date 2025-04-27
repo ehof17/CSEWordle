@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Script.Serialization;
@@ -16,7 +17,7 @@ namespace WordleWebApp
         {
             if (!IsPostBack)
             {
-                var defaultPath = Server.MapPath("~/App_Data/words.txt");
+                var defaultPath = Server.MapPath("~/App_Data/words.xml");
                 txtGenerateFilePath.Text = defaultPath;
                 txtValidFilePath.Text = defaultPath;
             }
@@ -25,7 +26,9 @@ namespace WordleWebApp
         {
             try
             {
-                lblGenerateResult.Text = _client.GenerateWord(txtGenerateFilePath.Text);
+                string xml = File.ReadAllText(txtValidFilePath.Text);
+
+                lblGenerateResult.Text = _client.GenerateWord(xml);
             }
             catch (Exception ex)
             {
@@ -37,8 +40,10 @@ namespace WordleWebApp
         {
             try
             {
-                bool ok = _client.IsValidGuess(txtValidFilePath.Text, txtGuess.Text);
-                lblIsValid.Text = ok ? "Valid" : "Invalid";
+                string xml = File.ReadAllText(txtValidFilePath.Text);
+                ValidResponse ok = _client.IsValidGuess(xml, txtGuess.Text);
+
+                lblIsValid.Text = ok.isValidWord ? "Valid: " + ok.Message : "Invalid: " + ok.Message;
             }
             catch (Exception ex)
             {
@@ -59,6 +64,7 @@ namespace WordleWebApp
                 
             }
         }
+
 
     }
 }

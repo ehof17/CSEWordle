@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema
+   
+   xmlns:xsd="http://schemas.datacontract.org/2004/07/WordleLogicServiceApplication"
+    elementFormDefault="qualified"
+>
+	<xsd:element name="GameWords">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="GameWord" minOccurs="0" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+
+
+	<xsd:element name="GameWord">
+
+
+		<xsd:complexType>
+			<xsd:sequence>
+				
+		
+				<xsd:element name="Word" type="xsd:string"/>
+				<xsd:element name="UsernameAdded" type="xsd:string"/>
+				<xsd:element name="TimeAdded"  type="xsd:dateTime"/>
+				
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+</xsd:schema>

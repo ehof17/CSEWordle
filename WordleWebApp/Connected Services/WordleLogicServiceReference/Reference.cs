@@ -15,6 +15,67 @@ namespace WordleWebApp.WordleLogicServiceReference {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ValidResponse", Namespace="http://schemas.datacontract.org/2004/07/WordleLogicServiceApplication")]
+    [System.SerializableAttribute()]
+    public partial class ValidResponse : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string MessageField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool isValidWordField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Message {
+            get {
+                return this.MessageField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.MessageField, value) != true)) {
+                    this.MessageField = value;
+                    this.RaisePropertyChanged("Message");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool isValidWord {
+            get {
+                return this.isValidWordField;
+            }
+            set {
+                if ((this.isValidWordField.Equals(value) != true)) {
+                    this.isValidWordField = value;
+                    this.RaisePropertyChanged("isValidWord");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="WordLetter", Namespace="http://schemas.datacontract.org/2004/07/WordleLogicServiceApplication")]
     [System.SerializableAttribute()]
     public partial class WordLetter : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
@@ -112,16 +173,16 @@ namespace WordleWebApp.WordleLogicServiceReference {
     public interface IService1 {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GenerateWord", ReplyAction="http://tempuri.org/IService1/GenerateWordResponse")]
-        string GenerateWord(string filePath);
+        string GenerateWord(string gameWordsXML);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GenerateWord", ReplyAction="http://tempuri.org/IService1/GenerateWordResponse")]
-        System.Threading.Tasks.Task<string> GenerateWordAsync(string filePath);
+        System.Threading.Tasks.Task<string> GenerateWordAsync(string gameWordsXML);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/IsValidGuess", ReplyAction="http://tempuri.org/IService1/IsValidGuessResponse")]
-        bool IsValidGuess(string filePath, string guess);
+        WordleWebApp.WordleLogicServiceReference.ValidResponse IsValidGuess(string wordsXML, string guess);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/IsValidGuess", ReplyAction="http://tempuri.org/IService1/IsValidGuessResponse")]
-        System.Threading.Tasks.Task<bool> IsValidGuessAsync(string filePath, string guess);
+        System.Threading.Tasks.Task<WordleWebApp.WordleLogicServiceReference.ValidResponse> IsValidGuessAsync(string wordsXML, string guess);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/WordGuessChecker", ReplyAction="http://tempuri.org/IService1/WordGuessCheckerResponse")]
         WordleWebApp.WordleLogicServiceReference.WordLetter[] WordGuessChecker(string userGuess, string actualWord);
@@ -134,6 +195,18 @@ namespace WordleWebApp.WordleLogicServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/ConvertToDisplay", ReplyAction="http://tempuri.org/IService1/ConvertToDisplayResponse")]
         System.Threading.Tasks.Task<WordleWebApp.WordleLogicServiceReference.WordLetter[]> ConvertToDisplayAsync(WordleWebApp.WordleLogicServiceReference.WordLetter[] guess);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetHint", ReplyAction="http://tempuri.org/IService1/GetHintResponse")]
+        string GetHint(string actualWord, int[] revealedPositions);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/GetHint", ReplyAction="http://tempuri.org/IService1/GetHintResponse")]
+        System.Threading.Tasks.Task<string> GetHintAsync(string actualWord, int[] revealedPositions);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/SaveWordToList", ReplyAction="http://tempuri.org/IService1/SaveWordToListResponse")]
+        string SaveWordToList(string existingWordXML, string wordToAdd, string username);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService1/SaveWordToList", ReplyAction="http://tempuri.org/IService1/SaveWordToListResponse")]
+        System.Threading.Tasks.Task<string> SaveWordToListAsync(string existingWordXML, string wordToAdd, string username);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -163,20 +236,20 @@ namespace WordleWebApp.WordleLogicServiceReference {
                 base(binding, remoteAddress) {
         }
         
-        public string GenerateWord(string filePath) {
-            return base.Channel.GenerateWord(filePath);
+        public string GenerateWord(string gameWordsXML) {
+            return base.Channel.GenerateWord(gameWordsXML);
         }
         
-        public System.Threading.Tasks.Task<string> GenerateWordAsync(string filePath) {
-            return base.Channel.GenerateWordAsync(filePath);
+        public System.Threading.Tasks.Task<string> GenerateWordAsync(string gameWordsXML) {
+            return base.Channel.GenerateWordAsync(gameWordsXML);
         }
         
-        public bool IsValidGuess(string filePath, string guess) {
-            return base.Channel.IsValidGuess(filePath, guess);
+        public WordleWebApp.WordleLogicServiceReference.ValidResponse IsValidGuess(string wordsXML, string guess) {
+            return base.Channel.IsValidGuess(wordsXML, guess);
         }
         
-        public System.Threading.Tasks.Task<bool> IsValidGuessAsync(string filePath, string guess) {
-            return base.Channel.IsValidGuessAsync(filePath, guess);
+        public System.Threading.Tasks.Task<WordleWebApp.WordleLogicServiceReference.ValidResponse> IsValidGuessAsync(string wordsXML, string guess) {
+            return base.Channel.IsValidGuessAsync(wordsXML, guess);
         }
         
         public WordleWebApp.WordleLogicServiceReference.WordLetter[] WordGuessChecker(string userGuess, string actualWord) {
@@ -193,6 +266,22 @@ namespace WordleWebApp.WordleLogicServiceReference {
         
         public System.Threading.Tasks.Task<WordleWebApp.WordleLogicServiceReference.WordLetter[]> ConvertToDisplayAsync(WordleWebApp.WordleLogicServiceReference.WordLetter[] guess) {
             return base.Channel.ConvertToDisplayAsync(guess);
+        }
+        
+        public string GetHint(string actualWord, int[] revealedPositions) {
+            return base.Channel.GetHint(actualWord, revealedPositions);
+        }
+        
+        public System.Threading.Tasks.Task<string> GetHintAsync(string actualWord, int[] revealedPositions) {
+            return base.Channel.GetHintAsync(actualWord, revealedPositions);
+        }
+        
+        public string SaveWordToList(string existingWordXML, string wordToAdd, string username) {
+            return base.Channel.SaveWordToList(existingWordXML, wordToAdd, username);
+        }
+        
+        public System.Threading.Tasks.Task<string> SaveWordToListAsync(string existingWordXML, string wordToAdd, string username) {
+            return base.Channel.SaveWordToListAsync(existingWordXML, wordToAdd, username);
         }
     }
 }

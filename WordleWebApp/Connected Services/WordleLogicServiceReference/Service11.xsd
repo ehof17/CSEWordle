@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/WordleLogicServiceApplication" xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/WordleLogicServiceApplication" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://webstrar47.fulton.asu.edu/Page2/Service1.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="ValidResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="isValidWord" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ValidResponse" nillable="true" type="tns:ValidResponse" />
   <xs:complexType name="ArrayOfWordLetter">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="WordLetter" nillable="true" type="tns:WordLetter" />

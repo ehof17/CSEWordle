@@ -8,13 +8,15 @@ using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml;
-using WordleLogic;
+using WordleWebApp.WordleLogicServiceReference;
 
 namespace WordleWebApp
 {
     public partial class Staff : System.Web.UI.Page
     {
         public static readonly object StaffLock = new object();
+        public static readonly object WordsLock = new object();
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!User.Identity.IsAuthenticated || !User.IsInRole("Staff"))
@@ -26,31 +28,33 @@ namespace WordleWebApp
         protected void addWordBtn_Click(object sender, EventArgs e)
         {
             string word = enterWordHereTB.Text;
-            try
+            if (word.Length != 5)
             {
-                if((!Logic.IsValidGuess(Server.MapPath("~/App_Data/words.txt"), word)) && (word.Length == 5))
-                {
-                    using (StreamWriter sw = new StreamWriter(Server.MapPath("~/App_Data/words.txt"), append: true))
-                    {
-                        sw.WriteLine(word);
-                    }
-                    WordAddedLbl.Text = "Word added";
-                }
-                else if (Logic.IsValidGuess(Server.MapPath("~/App_Data/words.txt"), word))
-                {
-                    WordAddedLbl.Text = "Word exists!";
-                }
-                else
-                {
-                    WordAddedLbl.Text = "Invalid word!";
-                }
-            }catch (Exception error)
+                WordAddedLbl.Text = "Word not correct length (5)";
+                return;
+            }
+
+            Service1Client logicClient = new Service1Client();
+            string wordsPath = Server.MapPath("~/App_Data/words.xml");
+            string words = File.ReadAllText(wordsPath);
+            string username = Session["Username"] as string ?? "unknown";
+            string saveResp = logicClient.SaveWordToList(words, word, username);
+            if (saveResp == "Invalid word!" || saveResp == "Word already exists!")
             {
-                Console.WriteLine(error);
+                WordAddedLbl.Text = saveResp;
+                return;
 
             }
-            
-        }
+            lock (WordsLock)
+            {
+                File.WriteAllText(wordsPath, saveResp);
+         
+            }
+            WordAddedLbl.Text = "Word " + word + " has been added!";
+
+
+
+          } 
 
         protected void backButton_Click(object sender, EventArgs e)
         {

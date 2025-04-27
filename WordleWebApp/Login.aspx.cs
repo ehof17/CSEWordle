@@ -18,16 +18,16 @@ namespace WordleWebApp
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            HttpCookie myCookies = Request.Cookies["myCookieId"];
-
-            if ((myCookies == null) || myCookies["username"] == "")
+            if (!IsPostBack)                        
             {
-                // new user or user didn't save username
+                HttpCookie myCookies = Request.Cookies["myCookieId"];
+                if (myCookies != null &&
+                    !string.IsNullOrWhiteSpace(myCookies["username"]))
+                {
+                    txtUsername.Text = myCookies["username"];  
+                }
             }
-            else
-            {
-                txtUsername.Text = myCookies["username"];
-            }
+         
         }
         protected void btnRegister_Click(object sender, EventArgs e)
         {

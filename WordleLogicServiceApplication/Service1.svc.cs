@@ -2,30 +2,34 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
+using System.Xml;
 
 namespace WordleLogicServiceApplication
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in both code and config file together.
     public class Service1 : IService1
     {
-        public string GenerateWord(string filePath)
+        public static Dictionary<string, bool> wordValidityCache = new Dictionary<string, bool>();
+        private static readonly DataContractSerializer gamewordser = new DataContractSerializer(typeof(GameWordList));
+        private static GameWordList LoadWords(string xml)
         {
-            if (!File.Exists(filePath))
+            if (string.IsNullOrWhiteSpace(xml)) return new GameWordList();
+            using (var r = XmlReader.Create(new StringReader(xml)))
             {
-                throw new FileNotFoundException("The file could not be found.\n", filePath);
+                return (GameWordList)gamewordser.ReadObject(r);
             }
-            string[] words = File.ReadAllLines(filePath);
-
-            if (words.Length == 0)
-            {
-                throw new InvalidOperationException("The file is empty.\n");
-            }
+        }
+        public string GenerateWord(string gameWordsXML)
+        {
+            GameWordList gameWords = LoadWords(gameWordsXML);
+            List<string> words = gameWords.Select(x => x.Word).Distinct().ToList();
 
             Random rand = new Random();
-            return words[rand.Next(words.Length)].Trim();
+            return words[rand.Next(words.Count)].Trim();
         }
         //Written by Alex Alvarado and edited by Eli Hoffman
         public List<WordLetter> WordGuessChecker(string userGuess, string actualWord)
@@ -103,24 +107,106 @@ namespace WordleLogicServiceApplication
         }
 
         //Written by Alex Alvarado
-        public bool IsValidGuess(string filePath, string guess)
-        {
-            if (!File.Exists(filePath))
-            {
-                throw new FileNotFoundException("The file could not be found.\n", filePath);
-            }
-            string[] words = File.ReadAllLines(filePath);
 
-            if (words.Length == 0)
+        public ValidResponse IsValidGuess(string wordsXML, string guess)
+        {
+            GameWordList words = LoadWords(wordsXML);
+            ValidResponse res = new ValidResponse();
+
+            // First check if the guess is in the provided list of GameWords
+            if (words.Any(x => string.Equals(x.Word, guess, StringComparison.OrdinalIgnoreCase)))
             {
-                throw new InvalidOperationException("The file is empty.\n");
+                res.isValidWord = true;
+                res.Message = "Word already present";
+                return res;
             }
-            if (words.Contains(guess))
+
+
+            // Hits a dictionary API to tell if an inputted word is in their dictionary
+            // First, check if we've already cached the result
+            if (wordValidityCache.ContainsKey(guess))
             {
-                return true;
+                bool cachedValidity =  wordValidityCache[guess];
+                res.isValidWord = cachedValidity;
+                res.Message = "Validity returned from dictionary";
+                return res;
             }
-            return false;
+
+            try
+            {
+                // Build the API URL 
+                string url = "https://api.dictionaryapi.dev/api/v2/entries/en/" + guess;
+                using (WebClient client = new WebClient())
+                {
+                    string json = client.DownloadString(url);
+                    // If the response contains "No Definitions Found", then this is an invalid word
+                    if (json.Contains("No Definitions Found"))
+                    {
+                        wordValidityCache[guess] = false;
+                        res.isValidWord = false;
+                        res.Message = "Word not found in dictionary";
+                        return res;
+                    }
+                    // Otherwise, there is a definition and the word is a real word
+                    else
+                    {
+                        wordValidityCache[guess] = true;
+                        res.isValidWord = true;
+                        res.Message = "Word found in dictionary";
+                        return res;
+                       
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                // For other errors, treat as invalid.
+                //wordValidityCache[guess] = false;
+                res.isValidWord = false;
+                res.Message = "Error occured attempting to query dictionary";
+                return res;
+            }
         }
+
+        private static string SaveWords(GameWordList list)
+        {
+            using (var sw = new StringWriter())
+            {
+                using (var w = XmlWriter.Create(sw))
+                {
+                    gamewordser.WriteObject(w, list);
+                    w.Flush();
+                }
+
+                return sw.ToString();
+            }
+        }
+        public string SaveWordToList(string existingWordXML, string wordToAdd, string username)
+        {
+            ValidResponse resp = IsValidGuess(existingWordXML, wordToAdd);
+            if (!resp.isValidWord)
+            {
+                return "Invalid word!";
+         
+            }
+            // Means that the word was valid since it was provided in the wordslist
+            if (resp.Message == "Word already present")
+            {
+                return "Word already exists!";
+            }
+
+            GameWordList existingGameWords = LoadWords(existingWordXML);
+
+            existingGameWords.Add(new GameWord
+            {
+                UsernameAdded = username,
+                Word = wordToAdd,
+                TimeAdded = DateTime.UtcNow
+            });
+            return SaveWords(existingGameWords);
+            
+        }
+
 
         //Written by Alex Alvarado
         public List<WordLetter> ConvertToDisplay(List<WordLetter> guess)
