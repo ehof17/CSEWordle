@@ -44,9 +44,10 @@ namespace WordleWebApp
                 Operation = "Staff page",
                 Parameters = "NA",
                 ReturnType = "NA",
-                Description = "Created the Staff page, a page where staff can enter new words to be used by the game",
+                Description = "Created the Staff page, a page where staff can enter new words to be used by the game and where staff can add new staff users",
                 TryItLink = "Staff.aspx"
             },
+
                   new ServiceEntry
             {
                 Provider = "Alex Alvarado",
