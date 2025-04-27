@@ -1,70 +1,115 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Web;
-using System.Web.Script.Serialization;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+﻿using System.Web.UI;
+using System;
 using WordleWebApp.WordleLogicServiceReference;
-namespace WordleWebApp
+using System.IO;
+
+public partial class WordleLogicTryIt : Page
 {
-    public partial class WordleLogicTryIt : Page
+    private readonly Service1Client _client = new Service1Client();
+    private string DefaultXmlPath => Server.MapPath("~/App_Data/words.xml");
+
+    protected void Page_Load(object sender, EventArgs e)
     {
-        private Service1Client _client = new Service1Client();
-
-        protected void Page_Load(object sender, EventArgs e)
+        if (!IsPostBack)
         {
-            if (!IsPostBack)
-            {
-                var defaultPath = Server.MapPath("~/App_Data/words.xml");
-                txtGenerateFilePath.Text = defaultPath;
-                txtValidFilePath.Text = defaultPath;
-            }
+            // Prefill the big XML box with the default file used in the Member page
+            txtXmlInput.Text = File.ReadAllText(DefaultXmlPath);
         }
-        protected void btnGenerateWord_Click(object sender, EventArgs e)
+    }
+
+    // 1. GenerateWord 
+    protected void btnGenerateWord_Click(object sender, EventArgs e)
+    {
+        try
         {
-            try
-            {
-                string xml = File.ReadAllText(txtValidFilePath.Text);
-
-                lblGenerateResult.Text = _client.GenerateWord(xml);
-            }
-            catch (Exception ex)
-            {
-                lblGenerateResult.Text = "Error: " + ex.Message;
-            }
+            string xml = GetXmlFromBoxOrDefault();
+            lblGenerateResult.Text = _client.GenerateWord(xml);
         }
-
-        protected void btnIsValid_Click(object sender, EventArgs e)
+        catch (Exception ex)
         {
-            try
-            {
-                string xml = File.ReadAllText(txtValidFilePath.Text);
-                ValidResponse ok = _client.IsValidGuess(xml, txtGuess.Text);
-
-                lblIsValid.Text = ok.isValidWord ? "Valid: " + ok.Message : "Invalid: " + ok.Message;
-            }
-            catch (Exception ex)
-            {
-                lblIsValid.Text = "Error: " + ex.Message;
-            }
+            lblGenerateResult.Text = "Error: " + ex.Message;
         }
+    }
 
-        protected void btnCheckGuess_Click(object sender, EventArgs e)
+    // 2. IsValidGuess 
+    protected void btnIsValid_Click(object sender, EventArgs e)
+    {
+        try
         {
-            try
-            {
-                var results = _client.WordGuessChecker(txtUserGuess.Text, txtActualWord.Text);
-                gvGuessResults.DataSource = results;
-                gvGuessResults.DataBind();
-            }
-            catch (Exception ex)
-            {
-                
-            }
+
+            string xml = GetXmlFromBoxOrDefault();
+            var resp = _client.IsValidGuess(xml, txtGuess.Text.Trim());
+            lblValidBool.Text = resp.isValidWord.ToString();
+            lblValidMessage.Text = resp.Message;
+
+
+    
+
+         
+        }
+        catch (Exception ex)
+        {
+            lblIsValid.Text = "Error: " + ex.Message;
+        }
+    }
+
+    // 3. WordGuessChecker ------------------------------------------------------
+    protected void btnCheckGuess_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            var results = _client.WordGuessChecker(
+                              txtUserGuess.Text.Trim(),
+                              txtActualWord.Text.Trim());
+
+            gvWGC.DataSource = results;
+            gvWGC.DataBind();
+        }
+        catch (Exception ex)
+        {
+            // Log or surface as needed
+        }
+    }
+
+    // 4. SaveWordToList --------------------------------------------------------
+    protected void btnSaveWord_Click(object sender, EventArgs e)
+    {
+        string xml = txtExistingXml.Text;              // leave blank? fine.
+        string word = txtWordToAdd.Text.Trim();
+        string username = txtUsername.Text.Trim();
+
+        if (string.IsNullOrWhiteSpace(word))
+        {
+            txtSaveResult.Text = "Please enter a word to add.";
+            return;
         }
 
+        // If xml box is empty, fall back to file
+        if (string.IsNullOrWhiteSpace(xml))
+            xml = File.ReadAllText(DefaultXmlPath);
 
+        try
+        {
+            string result = _client.SaveWordToList(xml, word, username);
+
+            // Display result
+            txtSaveResult.Text = result;
+
+            // For convenience, also push the returned XML back into the box
+            if (!result.StartsWith("Invalid") && !result.StartsWith("Word already"))
+                txtExistingXml.Text = result;
+        }
+        catch (Exception ex)
+        {
+            txtSaveResult.Text = "Service call failed: " + ex.Message;
+        }
+    }
+
+    // ---------- helper --------------------------------------------------------
+    private string GetXmlFromBoxOrDefault()
+    {
+        return string.IsNullOrWhiteSpace(txtXmlInput.Text)
+             ? File.ReadAllText(DefaultXmlPath)
+             : txtXmlInput.Text;
     }
 }

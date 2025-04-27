@@ -60,7 +60,7 @@ namespace WordleWebApp
 
       
             if (res.Result.Success)
-            {
+            { 
                 if (saveUsernameCB.Checked)
                 {
                     //Storing username and hashed password as cookies if the checkbox is checked written by Alex 4/12

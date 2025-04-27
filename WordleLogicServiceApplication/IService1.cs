@@ -21,11 +21,6 @@ namespace WordleLogicServiceApplication
         List<WordLetter> WordGuessChecker(string userGuess, string actualWord);
 
         [OperationContract]
-        List<WordLetter> ConvertToDisplay(List<WordLetter> guess);
-
-        [OperationContract]
-        string GetHint(string actualWord, List<int> revealedPositions);
-        [OperationContract]
         string SaveWordToList(string existingWordXML, string wordToAdd, string username);
 
     }

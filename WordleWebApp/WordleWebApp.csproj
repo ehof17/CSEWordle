@@ -139,6 +139,7 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <Content Include="HelperServiceTryIt.aspx" />
     <Content Include="Logout.aspx" />
     <Content Include="WordleLogicTryIt.aspx" />
     <None Include="App_Data\LoginAttempts.xsd">
@@ -329,6 +330,13 @@
     </Compile>
     <Compile Include="HashPassword.aspx.designer.cs">
       <DependentUpon>HashPassword.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HelperServiceTryIt.aspx.cs">
+      <DependentUpon>HelperServiceTryIt.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HelperServiceTryIt.aspx.designer.cs">
+      <DependentUpon>HelperServiceTryIt.aspx</DependentUpon>
     </Compile>
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>

@@ -42,7 +42,7 @@ namespace WordleLogicServiceApplication
             List<WordLetter> guessLetter = new List<WordLetter>();
 
             int length = userGuess.Length;
-
+            
             //adds each letter to the list holding the WordLetter objects
             foreach (char c in actualWord)
             {
@@ -126,7 +126,7 @@ namespace WordleLogicServiceApplication
             // First, check if we've already cached the result
             if (wordValidityCache.ContainsKey(guess))
             {
-                bool cachedValidity =  wordValidityCache[guess];
+                bool cachedValidity = wordValidityCache[guess];
                 res.isValidWord = cachedValidity;
                 res.Message = "Validity returned from dictionary";
                 return res;
@@ -154,7 +154,7 @@ namespace WordleLogicServiceApplication
                         res.isValidWord = true;
                         res.Message = "Word found in dictionary";
                         return res;
-                       
+
                     }
                 }
             }
@@ -187,7 +187,7 @@ namespace WordleLogicServiceApplication
             if (!resp.isValidWord)
             {
                 return "Invalid word!";
-         
+
             }
             // Means that the word was valid since it was provided in the wordslist
             if (resp.Message == "Word already present")
@@ -204,57 +204,9 @@ namespace WordleLogicServiceApplication
                 TimeAdded = DateTime.UtcNow
             });
             return SaveWords(existingGameWords);
-            
+
         }
 
-
-        //Written by Alex Alvarado
-        public List<WordLetter> ConvertToDisplay(List<WordLetter> guess)
-        {
-            List<WordLetter> display = new List<WordLetter>();
-            for (int i = 0; i < guess.Count; i++)
-            {
-                char displayChar;
-                if (guess[i].Status == WordLetter.LetterStatus.CorrectLetter)
-                {
-                    displayChar = guess[i].Letter;
-                }
-                else if (guess[i].Status == WordLetter.LetterStatus.CorrectLetterWrongSpot)
-                {
-                    displayChar = '?';
-
-                }
-                else if (guess[i].Status == WordLetter.LetterStatus.IncorrectLetter)
-                {
-                    displayChar = '_';
-                }
-                else
-                {
-                    Console.WriteLine("Something went wrong in convertToDisplay()");
-                    displayChar = ' ';
-                }
-                display.Add(new WordLetter(displayChar));
-            }
-            return display;
-        }
-
-        //Written by Jomi Ayeni
-        public string GetHint(string actualWord, List<int> revealedPositions)
-        {
-            if (string.IsNullOrEmpty(actualWord)) return "No word provided.";
-
-            for (int i = 0; i < actualWord.Length; i++)
-            {
-                if (!revealedPositions.Contains(i))
-                {
-                    revealedPositions.Add(i); 
-                    char hintChar = actualWord[i];
-                    return $"Hint: The letter at position {i + 1} is '{char.ToUpper(hintChar)}'";
-                }
-            }
-
-            return "All letters have already been revealed!";
-        }
 
     }
 }

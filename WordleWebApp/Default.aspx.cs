@@ -129,7 +129,30 @@ namespace WordleWebApp
                         ReturnType     = "N/A",
                         Description    = "Game-play page for Wordle.",
                         TryItLink      = "Member.aspx"
-                    }
+                    },
+                      new ServiceEntry
+                    {
+                        Provider       = "Eli Hoffman",
+                        ComponentType  = "Web Service (WSDL)",
+                        Operation      = "SaveWordToList",
+                        Parameters     = "string existingWordXML, string wordToAdd, string username",
+                        ReturnType     = "string",
+                        Description    = "Service Operation for WordleLogicService. Given a string of the clients gameWordsXML, a new word to add, and a username, it will return an updated string consisting of all the words in addition to the new word added",
+                        TryItLink      = "WordleLogicTryIt.aspx"
+                    },
+                new ServiceEntry
+                {
+                    Provider      = "Jomi",
+                    ComponentType = "Web Service (WSDL)",
+                    Operation     = "GetHint",
+                    Parameters    = "string actualWord, int[] revealedPositions",
+                    ReturnType    = "string",
+                    Description   = "Helper-service operation. Given the actualWord and a list " +
+                                    "of already-revealed positions, returns a hint message " +
+                                    "revealing the next unrevealed letter.",
+                    TryItLink     = "HelperServiceTryIt.aspx"
+                },
+
                 };
 
                 ServiceDirectoryGrid.DataSource = entries;

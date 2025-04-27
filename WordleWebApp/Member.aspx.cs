@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Web.UI;
 using WordleWebApp.WordleLogicServiceReference;
+using WordleWebApp.HelperServiceReference;
+using System.Linq;
 
 namespace WordleWebApp
 {
@@ -39,7 +41,7 @@ namespace WordleWebApp
             string generatedWord = "";
             try
             {
-                Service1Client logicClient = new Service1Client();
+                WordleLogicServiceReference.Service1Client logicClient = new WordleLogicServiceReference.Service1Client();
                 generatedWord = logicClient.GenerateWord(words).ToLower();
             }
             catch
@@ -79,7 +81,7 @@ namespace WordleWebApp
             }
 
             string userGuess = guessTextBox.Text.Trim().ToLower();
-            Service1Client logicClient = new Service1Client();
+            WordleLogicServiceReference.Service1Client logicClient = new WordleLogicServiceReference.Service1Client();
             bool validGuess = false;
             string wordsPath = Server.MapPath("~/App_Data/words.xml");
 
@@ -293,34 +295,41 @@ namespace WordleWebApp
 
         protected void hintBtn_Click(object sender, EventArgs e)
         {
-            string actualWord = (string)Session["ActualWord"];
-            HashSet<int> hintPositions = (HashSet<int>)Session["HintPositions"];
+            // Get state
+            string actualWord = Session["ActualWord"] as string;
+            HashSet<int> hintPositions = Session["HintPositions"] as HashSet<int>
+                                         ?? new HashSet<int>();
 
-            // Reveal a letter in a random position that hasn't been revealed yet
-            Random rand = new Random();
-            int position = -1;
-
-            List<int> availablePositions = new List<int>();
-            for (int i = 0; i < actualWord.Length; i++)
+            // any word at all?
+            if (string.IsNullOrEmpty(actualWord))
             {
-                if (!hintPositions.Contains(i))
-                {
-                    availablePositions.Add(i);
-                }
-            }
-
-            if (availablePositions.Count == 0)
-            {
-                resultLbl.Text = "No more hints available!";
+                resultLbl.Text = "No game word found.";
                 return;
             }
 
-            position = availablePositions[rand.Next(availablePositions.Count)];
-            hintPositions.Add(position);
-            Session["HintPositions"] = hintPositions;
+            // build the List<int> the service expects
+            List<int> revealedList = hintPositions.ToList();
 
-            char revealedLetter = actualWord[position];
-            resultLbl.Text = $"Hint: The letter at position {position + 1} is '{char.ToUpper(revealedLetter)}'.";
+            // ── call the helper service ───────────────────────────────────
+            using (var client = new HelperServiceReference.Service1Client())
+            {
+                string serviceMsg = client.GetHint(actualWord, revealedList.ToArray());
+
+                // If service says everything is revealed, just show that message
+                if (serviceMsg.StartsWith("All letters") || serviceMsg.StartsWith("No word"))
+                {
+                    resultLbl.Text = serviceMsg;
+                    return;
+                }
+
+                int newlyRevealed = Enumerable.Range(0, actualWord.Length)
+                                              .First(i => !hintPositions.Contains(i));
+
+                hintPositions.Add(newlyRevealed);
+                Session["HintPositions"] = hintPositions;  
+
+                resultLbl.Text = serviceMsg;                // e.g. “Hint: The letter at _ is _”
+            }
         }
 
 
