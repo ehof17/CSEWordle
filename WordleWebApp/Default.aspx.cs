@@ -151,6 +151,7 @@ namespace WordleWebApp
                                     "of already-revealed positions, returns a hint message " +
                                     "revealing the next unrevealed letter.",
                     TryItLink     = "HelperServiceTryIt.aspx"
+
                 },
 
                 };
